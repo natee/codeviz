@@ -1,8 +1,8 @@
-# code996 项目路线图
+# codeviz 项目路线图
 
 ## 🎯 项目目标
 
-code996 致力于成为了解真实工作状态的**可信数据源**，通过客观的代码提交数据分析，帮助用户：
+codeviz 致力于成为了解真实工作状态的**可信数据源**，通过客观的代码提交数据分析，帮助用户：
 
 - **识别真实的加班文化**：用数据说话，避免主观判断偏差
 - **提升个人工作效率**：了解自己的编码习惯，找到最佳工作时间窗口
@@ -121,15 +121,15 @@ code996 致力于成为了解真实工作状态的**可信数据源**，通过�
 
 ```bash
 # 基础质量分析
-code996 --quality
+codeviz --quality
 
 # 指定检测维度
-code996 --quality --complexity-only
-code996 --quality --length-check
+codeviz --quality --complexity-only
+codeviz --quality --length-check
 
 # 与时间分析结合
-code996 --quality --trend
-code996 --quality --self
+codeviz --quality --trend
+codeviz --quality --self
 ```
 
 **报告输出**：

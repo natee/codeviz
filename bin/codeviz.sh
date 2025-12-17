@@ -5,7 +5,7 @@ Help()
    echo "你也可以使用自定义参数进行指定查询"
    echo
    echo "格式: bash $0 [2022-01-01] [2022-04-04] [author]"
-   echo "示例: bash code996.sh 2022-01-01 2022-12-31 digua"
+   echo "示例: bash codeviz.sh 2022-01-01 2022-12-31 digua"
    echo "参数:"
    echo "1st     分析的起始时间."
    echo "2nd     分析的结束时间."
@@ -122,7 +122,7 @@ result=$time_start"_"$time_end"&week="$by_day_result"&hour="$by_hour_result
 
 # url
 github_url="https://natee.github.io/codeviz/#/result?time=$result"
-vercel_url="https://code996.vercel.app/#/result?time=$result"
+vercel_url="https://codeviz.vercel.app/#/result?time=$result"
 
 echo
 echo -e "${NC}复制以下url以查看可视化分析结果:"

@@ -5,13 +5,13 @@
 用于统计 Git 项目的 commit 时间分布，进而推导出这个项目的编码工作强度的脚本。
 不支持 Windows PowerShell 及 PowerShell 6，仅支持 PowerShell 7 及更高版本！
 .EXAMPLE
-./code996.ps1 "2022-1-1" -Author lc6464
+./codeviz.ps1 "2022-1-1" -Author lc6464
 .EXAMPLE
-./code996.ps1 "2022-1-1"
+./codeviz.ps1 "2022-1-1"
 .EXAMPLE
-./code996.ps1 -EndTime "2022-7-13"
+./codeviz.ps1 -EndTime "2022-7-13"
 .EXAMPLE
-./code996.ps1 "2022-1-1" "2022-1-31"
+./codeviz.ps1 "2022-1-1" "2022-1-31"
 .PARAMETER StartDate
 统计数据的开始日期（默认为今年的第一天）。
 .PARAMETER EndDate
@@ -60,7 +60,7 @@ if ($PSVersionTable.PSVersion.Major -lt 7) {
 
         # url
         $GithubUrl = "https://natee.github.io/codeviz/#/result?time=$result"
-        $VercelUrl = "https://code996.vercel.app/#/result?time=$result"
+        $VercelUrl = "https://codeviz.vercel.app/#/result?time=$result"
 
 
         Write-Host "复制以下 URL 以查看可视化分析结果："

@@ -225,7 +225,7 @@ export class RankingPrinter {
 ${chalk.bold('卷王排行命令使用说明:')}
 
 ${chalk.cyan('基本用法:')}
-  code996 ranking [选项]
+  codeviz ranking [选项]
 
 ${chalk.cyan('常用选项:')}
   -y, --year <year>           指定年份 (例如: 2025)
@@ -239,13 +239,13 @@ ${chalk.cyan('常用选项:')}
   --min-commits <number>      最少提交数阈值 (默认5)
 
 ${chalk.cyan('示例:')}
-  code996 ranking                          # 分析最近一年
-  code996 ranking -y 2024                  # 分析2024年
-  code996 ranking --all-time               # 分析所有历史
-  code996 ranking --exclude-authors bot    # 排除机器人
-  code996 ranking --merge-authors          # 合并同名作者
-  code996 ranking --topN 5                 # 显示前5名
-  code996 ranking --author "张三"          # 分析特定作者
+  codeviz ranking                          # 分析最近一年
+  codeviz ranking -y 2024                  # 分析2024年
+  codeviz ranking --all-time               # 分析所有历史
+  codeviz ranking --exclude-authors bot    # 排除机器人
+  codeviz ranking --merge-authors          # 合并同名作者
+  codeviz ranking --topN 5                 # 显示前5名
+  codeviz ranking --author "张三"          # 分析特定作者
     `)
   }
 }

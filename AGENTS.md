@@ -1,8 +1,8 @@
-# AGENTS.md - Code996 项目指南
+# AGENTS.md - CodeViz 项目指南
 
 ## 📋 项目概述
 
-**Code996** 是一个基于 TypeScript 开发的 CLI 工具，用于分析 Git 提交时间分布，计算"996指数" - 帮助用户了解团队工作模式并识别潜在的加班文化。
+**CodeViz** 是一个基于 TypeScript 开发的 CLI 工具，用于分析 Git 提交时间分布，计算"996指数" - 帮助用户了解团队工作模式并识别潜在的加班文化。
 
 ### 核心目标
 - **统计分析**: 分析 Git 提交时间戳，推导工作强度模式
@@ -22,7 +22,7 @@
 
 ### 项目布局
 ```
-/Users/zk/mi/code996/
+/Users/zk/mi/codeviz/
 ├── src/
 │   ├── cli/                    # CLI 接口层
 │   │   ├── index.ts            # CLI 管理器 - 命令注册
@@ -64,7 +64,7 @@
 │   │   └── version.ts          # 版本信息
 │   └── index.ts                # 入口点
 ├── bin/
-│   └── code996                 # CLI 入口 (可执行)
+│   └── codeviz                 # CLI 入口 (可执行)
 ├── dist/                       # 编译输出 (生成)
 ├── public/images/              # 演示图片
 ├── .docs/                      # 文档
@@ -112,11 +112,11 @@ pnpm start -- [options]
 
 ```bash
 # 全局安装
-pnpm i -g code996
-code996 [options]
+pnpm i -g codeviz
+codeviz [options]
 
 # 或直接使用 npx
-npx code996 [options]
+npx codeviz [options]
 ```
 
 ### 关键命令与选项
@@ -124,84 +124,84 @@ npx code996 [options]
 #### 卷王排行（团队成员分析）
 ```bash
 # 基础排行分析 (最近一年)
-code996 ranking
+codeviz ranking
 
 # 指定年份或范围
-code996 ranking -y 2025
-code996 ranking -y 2023-2025
+codeviz ranking -y 2025
+codeviz ranking -y 2023-2025
 
 # 显示前N名
-code996 ranking --topN 5
+codeviz ranking --topN 5
 
 # 全量历史
-code996 ranking --all-time
+codeviz ranking --all-time
 
 # 仅分析个人提交
-code996 ranking --self
+codeviz ranking --self
 
 # 分析特定作者
-code996 ranking --author "张三"
+codeviz ranking --author "张三"
 
 # 排除机器人账号
-code996 ranking --exclude-authors bot,CI,github-actions
+codeviz ranking --exclude-authors bot,CI,github-actions
 
 # 合并同名不同邮箱的作者
-code996 ranking --merge-authors
+codeviz ranking --merge-authors
 
 # 设置最少提交数阈值
-code996 ranking --min-commits 10
+codeviz ranking --min-commits 10
 
 # 自定义工作时间
-code996 ranking --hours 9.5-18.5
+codeviz ranking --hours 9.5-18.5
 
 # 时区过滤
-code996 ranking --timezone "+0800"
+codeviz ranking --timezone "+0800"
 ```
 
 #### 单仓库分析
 ```bash
 # 基础分析 (最近一年)
-code996
+codeviz
 
 # 指定年份或范围
-code996 -y 2025
-code996 -y 2023-2025
+codeviz -y 2025
+codeviz -y 2023-2025
 
 # 自定义日期范围
-code996 --since 2025-01-01 --until 2025-06-30
+codeviz --since 2025-01-01 --until 2025-06-30
 
 # 全量历史
-code996 --all-time
+codeviz --all-time
 
 # 仅分析个人提交
-code996 --self
+codeviz --self
 
 # 指定工作时间 (推荐，提高准确性)
-code996 --hours 9.5-18.5
+codeviz --hours 9.5-18.5
 
 # 半小时粒度展示
-code996 --half-hour
+codeviz --half-hour
 
 # 时区过滤
-code996 --timezone "+0800"
+codeviz --timezone "+0800"
 
 # 中国节假日模式
-code996 --cn
+codeviz --cn
 
 # 过滤噪音 (机器人、合并提交等)
-code996 --ignore-author "bot|jenkins" --ignore-msg "^Merge"
+codeviz --ignore-author "bot|jenkins" --ignore-msg "^Merge"
 ```
 
 #### 多仓库分析
 ```bash
 # 自动检测并分析多个仓库
-code996 /workspace
+codeviz /workspace
 
 # 指定多个路径
-code996 /path/proj1 /path/proj2
+codeviz /path/proj1 /path/proj2
 
 # 多仓库带过滤
-code996 /workspace --self --year 2025
+codeviz /workspace --self --year 2025
 ```
 
 ### 测试命令
@@ -449,14 +449,14 @@ try {
 ```bash
 # 测试单仓库分析
 cd /path/to/test/repo
-code996 -y 2025 --hours 9-18
+codeviz -y 2025 --hours 9-18
 
 # 测试多仓库分析
-code996 /workspace --self --half-hour
+codeviz /workspace --self --half-hour
 
 # 测试边界情况
-code996 --all-time --ignore-author "bot"
-code996 --timezone "+0800" --cn
+codeviz --all-time --ignore-author "bot"
+codeviz --timezone "+0800" --cn
 ```
 
 ## 📚 常见开发场景
@@ -552,8 +552,8 @@ code996 --timezone "+0800" --cn
 
 ---
 
-**最后更新**: 2025-12-17  
-**版本**: 1.0.0  
-**维护者**: Code996 开发团队
+**最后更新**: 2025-12-17
+**版本**: 1.0.0
+**维护者**: CodeViz 开发团队
 
 此 AGENTS.md 作为所有开发活动的唯一真实来源。所有 AI 代理和人类开发者都应定期参考并更新此文档。

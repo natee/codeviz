@@ -1,17 +1,17 @@
-# code996
+# codeviz
 
-code996 是一个分析工具，它可以统计 Git 项目的 commit 时间分布，进而推导出项目的编码工作强度。
+codeviz 是一个分析工具，它可以统计 Git 项目的 commit 时间分布，进而推导出项目的编码工作强度。
 
 它可以帮助你了解新团队工作的时间模式，识别潜在的加班文化。
 
-**使用方法很简单，一行命令即可开始：`npx code996`**
+**使用方法很简单，一行命令即可开始：`npx codeviz`**
 
 
 ## 它的用途
 
 面试时我们会询问面试官加班情况，但得到的答案有时不那么真实。但是代码的提交时间不会骗人，因此就有了这个工具。
 
-当你入职新公司，跑一下 `npx code996`，就可以看到数据背后的真相，从而判断这家公司的真实加班文化。
+当你入职新公司，跑一下 `npx codeviz`，就可以看到数据背后的真相，从而判断这家公司的真实加班文化。
 
 与其痛苦三个月，不如早点看清真相！别等到试用期结束才后悔！
 
@@ -64,32 +64,32 @@ code996 是一个分析工具，它可以统计 Git 项目的 commit 时间分�
 
 ```bash
 # 在当前仓库或仓库上级目录运行
-npx code996
+npx codeviz
 ```
 
 你也可以选择安装后再使用，这样就不用每次都重新下载：
 
 ```bash
 # 全局安装
-pnpm i -g code996
+pnpm i -g codeviz
 
 # 使用
-code996
+codeviz
 ```
 
 ## 🤖 智能分析模式
 
-code996 会根据上下文自动选择最合适的分析模式：
+codeviz 会根据上下文自动选择最合适的分析模式：
 
 - **在Git仓库中运行** → 单仓库深度分析
 - **目录下有多个仓库** → 自动进入多仓库分析模式
 
 ```bash
 # 智能检测，自动选择分析模式
-code996                    # 智能检测当前环境
-code996 /path/to/repo      # 分析指定仓库
-code996 /proj1 /proj2      # 自动进入多仓库模式
-code996 /workspace         # 自动扫描子目录
+codeviz                    # 智能检测当前环境
+codeviz /path/to/repo      # 分析指定仓库
+codeviz /proj1 /proj2      # 自动进入多仓库模式
+codeviz /workspace         # 自动扫描子目录
 ```
 
 ## 📖 详细使用说明
@@ -119,57 +119,57 @@ code996 /workspace         # 自动扫描子目录
 
 ```bash
 # ===== 卷王排行（团队成员分析） =====
-code996 ranking                # 分析最近一年的卷王排行
-code996 ranking -y 2025        # 分析2025年的卷王排行
-code996 ranking --topN 5       # 显示前5名
-code996 ranking --all-time     # 分析所有历史数据
-code996 ranking --self         # 只分析自己的提交
-code996 ranking --author "张三" # 分析特定作者的详细信息
-code996 ranking --exclude-authors bot,CI  # 排除机器人账号
-code996 ranking --merge-authors # 合并同名不同邮箱的作者
-code996 ranking --min-commits 10 # 设置最少提交数阈值
+codeviz ranking                # 分析最近一年的卷王排行
+codeviz ranking -y 2025        # 分析2025年的卷王排行
+codeviz ranking --topN 5       # 显示前5名
+codeviz ranking --all-time     # 分析所有历史数据
+codeviz ranking --self         # 只分析自己的提交
+codeviz ranking --author "张三" # 分析特定作者的详细信息
+codeviz ranking --exclude-authors bot,CI  # 排除机器人账号
+codeviz ranking --merge-authors # 合并同名不同邮箱的作者
+codeviz ranking --min-commits 10 # 设置最少提交数阈值
 
 # ===== 单仓库分析（智能模式） =====
-code996                        # 分析当前仓库（最近一年）
-code996 /path/to/repo          # 分析指定仓库
-code996 -y 2025                # 分析2025年
-code996 -y 2023-2025           # 分析2023-2025年
-code996 --all-time             # 查询整个仓库历史
-code996 --self                 # 只分析当前用户的提交
-code996 --self -y 2025         # 分析自己在2025年的提交
+codeviz                        # 分析当前仓库（最近一年）
+codeviz /path/to/repo          # 分析指定仓库
+codeviz -y 2025                # 分析2025年
+codeviz -y 2023-2025           # 分析2023-2025年
+codeviz --all-time             # 查询整个仓库历史
+codeviz --self                 # 只分析当前用户的提交
+codeviz --self -y 2025         # 分析自己在2025年的提交
 
 # ===== 多仓库分析（智能自动检测） =====
-code996                        # 如果子目录有多个仓库，自动进入多仓库模式
-code996 /path/proj1 /path/proj2  # 传入多个路径，自动分析多个仓库
-code996 /workspace             # 扫描指定目录的所有子仓库
-code996 /workspace -y 2025     # 分析2025年的数据和趋势
-code996 --self                 # 只统计当前用户在所有仓库中的提交
+codeviz                        # 如果子目录有多个仓库，自动进入多仓库模式
+codeviz /path/proj1 /path/proj2  # 传入多个路径，自动分析多个仓库
+codeviz /workspace             # 扫描指定目录的所有子仓库
+codeviz /workspace -y 2025     # 分析2025年的数据和趋势
+codeviz --self                 # 只统计当前用户在所有仓库中的提交
 
 # 手动指定工时（推荐）
-code996 --hours 9.5-18.5       # 指定 9:30-18:30（支持小数）
-code996 --hours 9.5-19 -y 2025 # 结合年份分析
+codeviz --hours 9.5-18.5       # 指定 9:30-18:30（支持小数）
+codeviz --hours 9.5-19 -y 2025 # 结合年份分析
 
 # 精细分析（半小时粒度）
-code996 --half-hour            # 以半小时粒度展示时间分布
-code996 -y 2025 --half-hour    # 结合年份分析，精细展示
-code996 /proj1 /proj2 --half-hour  # 多仓库分析，半小时粒度展示
+codeviz --half-hour            # 以半小时粒度展示时间分布
+codeviz -y 2025 --half-hour    # 结合年份分析，精细展示
+codeviz /proj1 /proj2 --half-hour  # 多仓库分析，半小时粒度展示
 
 # 跨时区项目分析
-code996 --timezone="+0800"     # 只分析东八区（中国）的提交
-code996 --timezone="-0700"     # 只分析西七区（美国西海岸）的提交
-code996 -y 2025 --timezone="+0800"  # 分析2025年特定时区的提交
+codeviz --timezone="+0800"     # 只分析东八区（中国）的提交
+codeviz --timezone="-0700"     # 只分析西七区（美国西海岸）的提交
+codeviz -y 2025 --timezone="+0800"  # 分析2025年特定时区的提交
 
 # 中国节假日调休分析
-code996                        # 系统自动检测主要时区为 +0800 时，会自动启用节假日调休
-code996 --cn                   # 手动强制开启节假日调休模式（适用于非 +0800 时区项目）
-code996 --timezone="-0700" --cn # 分析非中国时区项目，但需要按中国节假日调休判断
+codeviz                        # 系统自动检测主要时区为 +0800 时，会自动启用节假日调休
+codeviz --cn                   # 手动强制开启节假日调休模式（适用于非 +0800 时区项目）
+codeviz --timezone="-0700" --cn # 分析非中国时区项目，但需要按中国节假日调休判断
 
 # 过滤噪音数据（排除 CI/CD 机器人、合并提交等）
-code996 --ignore-author "bot"                    # 排除所有包含 "bot" 的作者
-code996 --ignore-author "bot|jenkins|github-actions"  # 排除多个作者（使用 | 分隔）
-code996 --ignore-msg "^Merge"                    # 排除所有以 "Merge" 开头的提交消息
-code996 --ignore-msg "merge|lint|format"         # 排除多个关键词
-code996 -y 2025 --ignore-author "renovate|dependabot" --ignore-msg "^Merge" # 综合过滤
+codeviz --ignore-author "bot"                    # 排除所有包含 "bot" 的作者
+codeviz --ignore-author "bot|jenkins|github-actions"  # 排除多个作者（使用 | 分隔）
+codeviz --ignore-msg "^Merge"                    # 排除所有以 "Merge" 开头的提交消息
+codeviz --ignore-msg "merge|lint|format"         # 排除多个关键词
+codeviz -y 2025 --ignore-author "renovate|dependabot" --ignore-msg "^Merge" # 综合过滤
 ```
 
 **常见排除场景**：
@@ -218,7 +218,7 @@ Git 仓库 → git log 采集 → 日级首提 + 小时分布 → 分位数推�
 - 隐私保护：所有对 Git 数据的分析均在本地进行，不会上传任何结果或日志。
 - 分析局限性：工具仅统计 git log 中的 commit 时间。然而，实际工作还包括开会、学习、维护文档、调试自测等活动。因此，报告无法覆盖全部的实际工作时间，分析结果准确性有限，请谨慎参考。
 - 使用限制：本项目分析结果仅供个人参考，请勿用于 “作恶” 或不当用途。
-- 免责声明：code996 不对使用、传播本程序及附属产物造成的任何后果承担任何责任。
+- 免责声明：codeviz 不对使用、传播本程序及附属产物造成的任何后果承担任何责任。
 
 ## 其他疑问
 
@@ -226,7 +226,7 @@ Git 仓库 → git log 采集 → 日级首提 + 小时分布 → 分位数推�
 
 ### 💡 拿到代码才能分析，入职了再用岂不是马后炮？
 
-并非如此。code996 的核心价值在于打破信息差，用真实数据对抗口头画饼。
+并非如此。codeviz 的核心价值在于打破信息差，用真实数据对抗口头画饼。
 
 1. 试用期即“验货期”：入职不代表卖身。法律规定的试用期也是我们对公司的考察期。如果第一天就发现是天坑，趁早止损也是一种避坑策略。
 2. 内推时背调：格局打开！你完全可以找在那家公司工作的内鬼朋友帮忙跑一下。这不就是最硬核的内推背调吗？🐶
@@ -234,7 +234,7 @@ Git 仓库 → git log 采集 → 日级首提 + 小时分布 → 分位数推�
 
 ### 📉 项目习惯本地多次提交后 Squash 再推送，会影响准确性吗？
 
-影响会有，但 code996 依赖的是统计学规律，只要 commit 样本达到一定数量，最终呈现的是团队整体的集体工作模式，特殊提交习惯在统计学上会被视为“噪声”被过滤掉。
+影响会有，但 codeviz 依赖的是统计学规律，只要 commit 样本达到一定数量，最终呈现的是团队整体的集体工作模式，特殊提交习惯在统计学上会被视为“噪声”被过滤掉。
 
 ### 🛡️ 为什么不支持查看项目成员的996指数？
 

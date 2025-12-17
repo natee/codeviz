@@ -3,6 +3,7 @@ import chalk from 'chalk'
 import fs from 'fs'
 import path from 'path'
 import { execSync } from 'child_process'
+import cfonts from 'cfonts'
 import { getPackageVersion } from '../utils/version'
 import { printGlobalNotices } from './common/notices'
 import { AnalyzeOptions } from '../types/git-types'
@@ -22,7 +23,7 @@ export class CLIManager {
   /** 配置 CLI 的基础信息与可用命令 */
   private setupProgram(): void {
     this.program
-      .name('code996')
+      .name('codeviz')
       .description('通过分析 Git commit 的时间分布，计算出项目的"996指数"')
       .version(getPackageVersion(), '-v, --version', '显示版本号')
 
@@ -76,7 +77,7 @@ export class CLIManager {
   private setupErrorHandling(): void {
     this.program.on('command:*', (operands) => {
       console.error(chalk.red(`错误: 未知命令 '${operands[0]}'`))
-      console.log('运行 code996 -h 查看可用命令')
+      console.log('运行 codeviz -h 查看可用命令')
       process.exit(1)
     })
 
@@ -130,9 +131,9 @@ export class CLIManager {
       console.error(chalk.red('❌ 未在当前目录找到 Git 仓库'))
       console.log()
       console.log(chalk.cyan('💡 提示:'))
-      console.log('  • 请在 Git 仓库根目录运行 code996')
-      console.log('  • 或者使用 code996 <仓库路径> 指定要分析的仓库')
-      console.log('  • 或者传入多个路径进行对比: code996 /path1 /path2')
+      console.log('  • 请在 Git 仓库根目录运行 codeviz')
+      console.log('  • 或者使用 codeviz <仓库路径> 指定要分析的仓库')
+      console.log('  • 或者传入多个路径进行对比: codeviz /path1 /path2')
       process.exit(1)
     }
 
@@ -326,34 +327,31 @@ export class CLIManager {
 
   /** 自定义帮助信息展示，补充常用示例 */
   private showHelp(): void {
-    // 使用更紧凑的 CODE996 字符图，避免在窄终端中被截断
-    const banner = `
- ████    ████   █████   ██████   ████    ████    ████
-██  ██  ██  ██  ██  ██  ██      ██  ██  ██  ██  ██
-██      ██  ██  ██  ██  █████    █████   █████  █████
-██  ██  ██  ██  ██  ██  ██          ██      ██  ██  ██
- ████    ████   █████   ██████   ████    ████    ████
-`
-
-    console.log(chalk.hex('#D72654')(banner))
+    // 使用 cfonts 生成漂亮的 CODEVIZ 字符图
+    cfonts.say('CODEVIZ', {
+      font: 'block',
+      colors: ['#D72654'],
+      space: false,
+      align: 'left',
+    })
     console.log(`> 统计 Git 项目的 commit 时间分布，进而推导出项目的编码工作强度。
 
 ${chalk.bold('使用方法:')}
-  code996 [路径...] [选项]
+  codeviz [路径...] [选项]
 
 ${chalk.bold('命令:')}
   help              显示帮助信息
 
 ${chalk.bold('智能分析模式:')}
-  code996 会自动检测并选择最合适的分析模式：
+  codeviz 会自动检测并选择最合适的分析模式：
 
   ${chalk.cyan('●')} ${chalk.bold('单仓库深度分析')}
-    • 在 Git 仓库中运行 code996
-    • 或指定单个仓库路径: code996 /path/to/repo
+    • 在 Git 仓库中运行 codeviz
+    • 或指定单个仓库路径: codeviz /path/to/repo
     → 深度分析单个项目，包含月度趋势
 
   ${chalk.cyan('●')} ${chalk.bold('多仓库横向对比')}
-    • 传入多个路径: code996 /path1 /path2
+    • 传入多个路径: codeviz /path1 /path2
     • 或在有多个子仓库的目录运行
     → 自动进入多仓库模式，汇总分析
 
@@ -377,22 +375,22 @@ ${chalk.bold('默认策略:')}
 
 ${chalk.bold('示例:')}
   ${chalk.gray('# 单仓库分析')}
-  code996                       # 分析当前仓库（最近一年）
-  code996 /path/to/repo         # 分析指定仓库
-  code996 -y 2025               # 分析2025年整年
-  code996 --self                # 只统计当前用户的提交
-  code996 --ignore-author "bot" # 排除机器人提交
+  codeviz                       # 分析当前仓库（最近一年）
+  codeviz /path/to/repo         # 分析指定仓库
+  codeviz -y 2025               # 分析2025年整年
+  codeviz --self                # 只统计当前用户的提交
+  codeviz --ignore-author "bot" # 排除机器人提交
 
   ${chalk.gray('# 多仓库分析')}
-  code996 /proj1 /proj2         # 传入多个路径，自动分析多个仓库
-  code996 /workspace            # 子目录有多个仓库，自动进入多仓库模式
-  code996 -y 2024 --self        # 组合使用，分析2024年自己的提交
+  codeviz /proj1 /proj2         # 传入多个路径，自动分析多个仓库
+  codeviz /workspace            # 子目录有多个仓库，自动进入多仓库模式
+  codeviz -y 2024 --self        # 组合使用，分析2024年自己的提交
 
   ${chalk.gray('# 过滤噪音数据')}
-  code996 --ignore-author "bot" # 排除所有包含 "bot" 的作者
-  code996 --ignore-author "bot|jenkins|github-actions"  # 排除多个作者（使用 | 分隔）
-  code996 --ignore-msg "^Merge" # 排除所有以 "Merge" 开头的提交消息
-  code996 --ignore-msg "merge|lint|format"  # 排除多个关键词
+  codeviz --ignore-author "bot" # 排除所有包含 "bot" 的作者
+  codeviz --ignore-author "bot|jenkins|github-actions"  # 排除多个作者（使用 | 分隔）
+  codeviz --ignore-msg "^Merge" # 排除所有以 "Merge" 开头的提交消息
+  codeviz --ignore-msg "merge|lint|format"  # 排除多个关键词
 
 ${chalk.bold('正则表达式语法说明:')}
   - 使用 | 分隔多个模式 (例如: bot|jenkins)

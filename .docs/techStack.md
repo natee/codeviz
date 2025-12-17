@@ -1,8 +1,8 @@
-# Code996 项目技术栈文档
+# CodeViz 项目技术栈文档
 
 ## 📋 技术栈概览
 
-Code996 是一个基于 TypeScript 开发的命令行工具，用于分析 Git 仓库中提交的时间分布，计算项目的"996指数"。本文档专注于项目的技术栈配置、依赖管理和开发流程。
+CodeViz 是一个基于 TypeScript 开发的命令行工具，用于分析 Git 仓库中提交的时间分布，计算项目的"996指数"。本文档专注于项目的技术栈配置、依赖管理和开发流程。
 
 ### 技术选型原则
 
@@ -30,7 +30,7 @@ Code996 是一个基于 TypeScript 开发的命令行工具，用于分析 Git �
 - 提供完整的命令行参数解析功能
 - 支持子命令、选项、参数验证
 - 自动生成帮助文档
-- 使用示例：`code996 -y 2025 --self`
+- 使用示例：`codeviz -y 2025 --self`
 
 **Chalk**
 
@@ -120,8 +120,8 @@ Code996 是一个基于 TypeScript 开发的命令行工具，用于分析 Git �
 
 3. **发布包结构**
    ```
-   code996/
-   ├── bin/code996          # CLI 入口
+   codeviz/
+   ├── bin/codeviz          # CLI 入口
    ├── dist/                # 编译后的代码
    ├── package.json         # 包配置
    └── README.md           # 项目文档
@@ -134,7 +134,7 @@ Code996 是一个基于 TypeScript 开发的命令行工具，用于分析 Git �
 ```json
 {
   "bin": {
-    "code996": "bin/code996"
+    "codeviz": "bin/codeviz"
   },
   "files": ["bin/", "dist/", "README.md"],
   "engines": {

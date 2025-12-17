@@ -27,20 +27,20 @@ describe('CLIManager', () => {
 
   describe('analyze command', () => {
     it('should handle analyze command with default options', async () => {
-      cli.parse(['node', 'code996', 'analyze'])
+      cli.parse(['node', 'codeviz', 'analyze'])
 
       expect(consoleSpy).toHaveBeenCalledWith('分析仓库: .')
       expect(consoleSpy).toHaveBeenCalledWith('分析完成！ (此功能将在后续阶段实现)')
     })
 
     it('should handle analyze command with custom path', async () => {
-      cli.parse(['node', 'code996', 'analyze', '/test/path'])
+      cli.parse(['node', 'codeviz', 'analyze', '/test/path'])
 
       expect(consoleSpy).toHaveBeenCalledWith('分析仓库: /test/path')
     })
 
     it('should handle analyze command with debug mode', async () => {
-      cli.parse(['node', 'code996', 'analyze', '--debug'])
+      cli.parse(['node', 'codeviz', 'analyze', '--debug'])
 
       expect(consoleSpy).toHaveBeenCalledWith('调试模式开启')
       expect(consoleSpy).toHaveBeenCalledWith('参数:')
@@ -49,9 +49,9 @@ describe('CLIManager', () => {
 
   describe('help command', () => {
     it('should display help information', () => {
-      cli.parse(['node', 'code996', 'help'])
+      cli.parse(['node', 'codeviz', 'help'])
 
-      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('code996'))
+      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('codeviz'))
       expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('使用方法:'))
       expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('命令:'))
     })
@@ -61,7 +61,7 @@ describe('CLIManager', () => {
     it('should handle unknown commands', () => {
       const exitSpy = jest.spyOn(process, 'exit').mockImplementation()
 
-      cli.parse(['node', 'code996', 'unknown'])
+      cli.parse(['node', 'codeviz', 'unknown'])
 
       expect(consoleSpy).toHaveBeenCalledWith("错误: 未知命令 'unknown'")
       expect(exitSpy).toHaveBeenCalledWith(1)

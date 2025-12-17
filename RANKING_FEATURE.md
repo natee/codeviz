@@ -2,7 +2,7 @@
 
 ## 🏆 功能概述
 
-卷王排行是 code996 的核心功能之一，它可以分析 Git 仓库中每个贡献者的提交行为，计算他们的 996 指数，并生成可视化的排行榜。
+卷王排行是 codeviz 的核心功能之一，它可以分析 Git 仓库中每个贡献者的提交行为，计算他们的 996 指数，并生成可视化的排行榜。
 
 ### 核心价值
 
@@ -57,7 +57,7 @@ const index996 = overtimeRatio * 3
 
 ```bash
 # 快速了解团队工作文化
-code996 ranking --topN 10
+codeviz ranking --topN 10
 ```
 
 **分析要点**：
@@ -69,7 +69,7 @@ code996 ranking --topN 10
 
 ```bash
 # 分析最近一年数据
-code996 ranking -y 2025 --min-commits 20
+codeviz ranking -y 2025 --min-commits 20
 ```
 
 **分析要点**：
@@ -81,7 +81,7 @@ code996 ranking -y 2025 --min-commits 20
 
 ```bash
 # 查看自己在团队中的位置
-code996 ranking --self --author "你的名字"
+codeviz ranking --self --author "你的名字"
 ```
 
 **分析要点**：
@@ -93,7 +93,7 @@ code996 ranking --self --author "你的名字"
 
 ```bash
 # 排除机器人和自动化提交
-code996 ranking --exclude-authors bot,CI,jenkins,github-actions
+codeviz ranking --exclude-authors bot,CI,jenkins,github-actions
 ```
 
 **分析要点**：
@@ -107,7 +107,7 @@ code996 ranking --exclude-authors bot,CI,jenkins,github-actions
 同一个人可能使用不同邮箱提交代码：
 
 ```bash
-code996 ranking --merge-authors
+codeviz ranking --merge-authors
 ```
 
 **工作原理**：
@@ -121,10 +121,10 @@ code996 ranking --merge-authors
 
 ```bash
 # 只分析中国时区的提交
-code996 ranking --timezone "+0800"
+codeviz ranking --timezone "+0800"
 
 # 只分析美国西海岸的提交
-code996 ranking --timezone "-0700"
+codeviz ranking --timezone "-0700"
 ```
 
 ### 自定义工作时间
@@ -133,20 +133,20 @@ code996 ranking --timezone "-0700"
 
 ```bash
 # 互联网公司 996
-code996 ranking --hours 9-21
+codeviz ranking --hours 9-21
 
 # 外企 955
-code996 ranking --hours 9-18
+codeviz ranking --hours 9-18
 
 # 弹性工作制
-code996 ranking --hours 9.5-18.5
+codeviz ranking --hours 9.5-18.5
 ```
 
 ### 特定作者分析
 
 ```bash
 # 分析特定作者的详细信息
-code996 ranking --author "张三" --topN 1
+codeviz ranking --author "张三" --topN 1
 ```
 
 **输出包含**：
@@ -239,10 +239,10 @@ code996 ranking --author "张三" --topN 1
 **解决**：
 ```bash
 # 降低阈值
-code996 ranking --min-commits 1
+codeviz ranking --min-commits 1
 
 # 扩大时间范围
-code996 ranking --all-time
+codeviz ranking --all-time
 ```
 
 ### 问题：作者过多
@@ -254,10 +254,10 @@ code996 ranking --all-time
 **解决**：
 ```bash
 # 排除机器人
-code996 ranking --exclude-authors bot,CI
+codeviz ranking --exclude-authors bot,CI
 
 # 合并作者
-code996 ranking --merge-authors
+codeviz ranking --merge-authors
 ```
 
 ### 问题：指数异常高
@@ -269,12 +269,12 @@ code996 ranking --merge-authors
 **解决**：
 ```bash
 # 检查工作时间
-code996 ranking --hours 9-18
+codeviz ranking --hours 9-18
 
 # 查看详细分布
-code996 ranking --author "异常作者"
+codeviz ranking --author "异常作者"
 ```
 
-**最后更新**: 2025-12-17  
-**版本**: 1.0.0  
-**维护者**: Code996 开发团队
+**最后更新**: 2025-12-17
+**版本**: 1.0.0
+**维护者**: CodeViz 开发团队
