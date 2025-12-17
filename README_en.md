@@ -71,7 +71,7 @@ You can also install it first so you don't have to re-download every time:
 
 ```bash
 # Global install
-npm i -g code996
+pnpm i -g code996
 
 # Use
 code996

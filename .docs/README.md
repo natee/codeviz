@@ -105,7 +105,7 @@
 
 - [ ] TypeScript 类型检查通过（`npx tsc --noEmit`）
 - [ ] Prettier 代码格式化检查（`npx prettier --check src/`）
-- [ ] Jest 单元测试通过（`npm test`）
+- [ ] Jest 单元测试通过（`pnpm test`）
 - [ ] CLI 命令功能正常（手动测试各种参数组合）
 - [ ] 输出格式正确（表格对齐、颜色显示、自适应宽度）
 - [ ] 跨平台兼容性（Windows、macOS、Linux 基本功能测试）

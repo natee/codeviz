@@ -73,7 +73,7 @@ npx code996
 
 ```bash
 # 全局安装
-npm i -g code996
+pnpm i -g code996
 
 # 使用
 code996

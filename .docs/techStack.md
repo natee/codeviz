@@ -75,7 +75,7 @@ Code996 是一个基于 TypeScript 开发的命令行工具，用于分析 Git �
 1. **环境准备**
 
    ```bash
-   npm install  # 安装依赖
+   pnpm install  # 安装依赖
    ```
 
 2. **代码编写**
@@ -85,8 +85,8 @@ Code996 是一个基于 TypeScript 开发的命令行工具，用于分析 Git �
 
 3. **测试验证**
    ```bash
-   npm test     # 运行单元测试
-   npm run build # 构建验证
+   pnpm test     # 运行单元测试
+   pnpm run build # 构建验证
    ```
 
 ### 构建流程
@@ -148,7 +148,7 @@ Code996 是一个基于 TypeScript 开发的命令行工具，用于分析 Git �
 1. 确保所有测试通过
 2. 更新版本号
 3. 运行构建命令
-4. 执行发布命令：`npm publish`
+4. 执行发布命令：`pnpm publish`
 
 ## 🛠️ 开发工具和流程
 
