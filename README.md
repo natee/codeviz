@@ -77,6 +77,120 @@ pnpm i -g codeviz
 codeviz
 ```
 
+## 🔧 本地调试
+
+如果你想在本地开发或调试 codeviz，可以按照以下步骤操作：
+
+### 环境准备
+
+```bash
+# 1. 克隆仓库
+git clone https://github.com/natee/codeviz.git
+cd codeviz
+
+# 2. 安装依赖
+pnpm install
+
+# 3. 构建项目
+pnpm run build
+```
+
+### 调试方法
+
+#### 方法一：使用 npm link（推荐）
+
+```bash
+# 在项目目录下创建全局链接
+pnpm link
+
+# 在任意目录使用（会使用你本地的代码）
+codeviz [options]
+
+# 测试完成后取消链接
+pnpm unlink
+```
+
+#### 方法二：直接运行构建后的代码
+
+```bash
+# 构建后直接运行
+pnpm run build
+node dist/index.js [options]
+
+# 或者使用 start 脚本
+pnpm start -- [options]
+```
+
+#### 方法三：使用 ts-node（无需构建）
+
+```bash
+# 安装 ts-node（如果尚未安装）
+pnpm install -g ts-node
+
+# 直接运行 TypeScript 源码
+ts-node src/index.ts [options]
+
+# 或者使用 package.json 中的脚本（如果已配置）
+# npx ts-node src/index.ts [options]
+```
+
+### 开发模式
+
+```bash
+# 监听文件变化并自动编译（推荐开发时使用）
+pnpm run dev
+
+# 在另一个终端窗口运行
+node dist/index.js [options]
+```
+
+### 测试示例
+
+```bash
+# 在 codeviz 项目目录下测试
+cd /path/to/test/repo  # 进入一个 Git 仓库
+node /path/to/codeviz/dist/index.js -y 2025 --hours 9-18
+
+# 或者使用 npm link 后
+cd /path/to/test/repo
+codeviz -y 2025 --hours 9-18
+
+# 测试多仓库分析
+codeviz /path/to/workspace
+
+# 测试卷王排行
+codeviz ranking -y 2025
+```
+
+### 调试技巧
+
+```bash
+# 查看帮助信息
+node dist/index.js --help
+
+# 使用详细模式（如果支持）
+node dist/index.js [options] --verbose
+
+# 测试特定功能
+node dist/index.js --self -y 2025 --hours 9-18
+node dist/index.js ranking --topN 5 --merge-authors
+```
+
+### 常见问题
+
+**Q: 修改代码后需要重新构建吗？**
+A: 是的，修改 TypeScript 源码后需要重新运行 `pnpm run build` 或使用 `pnpm run dev` 自动构建。
+
+**Q: 如何测试不同的 Git 仓库？**
+A: 可以使用任何 Git 仓库进行测试，包括本项目自身：
+```bash
+cd /Users/zk/mi/code996
+node dist/index.js -y 2025
+```
+
+**Q: 如何验证我的修改是否生效？**
+A: 可以在代码中添加临时的 console.log，然后重新构建并运行查看输出。
+
 ## 🤖 智能分析模式
 
 codeviz 会根据上下文自动选择最合适的分析模式：
