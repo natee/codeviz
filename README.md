@@ -366,6 +366,32 @@ Git 仓库 → git log 采集 → 日级首提 + 小时分布 → 分位数推�
 
 接下来的功能都会沿着 WLB 和工作避坑的路线来开发，包括：更精细的加班比例分析、以及分析代码的屎山指数（复杂度分析），毕竟维护屎山也是导致 996 的罪魁祸首之一。
 
+## 🚀 开发和发布
+
+本项目使用 [release-it](https://github.com/release-it/release-it) 进行自动化版本管理和发布。
+
+```bash
+# 开发
+pnpm install
+pnpm run dev
+
+# 测试
+pnpm test
+
+# 构建
+pnpm run build
+
+# 发布（自动递增版本号、创建标签、更新 CHANGELOG）
+pnpm run release
+
+# 快速发布
+pnpm run release:patch  # 补丁版本
+pnpm run release:minor  # 次版本
+pnpm run release:major  # 主版本
+```
+
+详见 [RELEASE_GUIDE.md](RELEASE_GUIDE.md)
+
 ## AI 和协作
 
 🤖 **AI 协作伙伴注意**：本项目采用标准化的 AI 协作流程，详情请查看 [.docs/README.md](.docs/README.md) 中的协作规范。
