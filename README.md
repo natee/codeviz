@@ -368,27 +368,21 @@ Git 仓库 → git log 采集 → 日级首提 + 小时分布 → 分位数推�
 
 ## 🚀 开发和发布
 
-本项目使用 [release-it](https://github.com/release-it/release-it) 进行自动化版本管理和发布。
-
 ```bash
 # 开发
 pnpm install
 pnpm run dev
 
-# 测试
-pnpm test
-
-# 构建
-pnpm run build
-
-# 发布（自动递增版本号、创建标签、更新 CHANGELOG）
+# 发布（自动测试、构建、更新版本、创建标签）
 pnpm run release
 
 # 快速发布
-pnpm run release:patch  # 补丁版本
-pnpm run release:minor  # 次版本
-pnpm run release:major  # 主版本
+pnpm run release:patch  # 0.0.x (Bug 修复)
+pnpm run release:minor  # 0.x.0 (新功能)
+pnpm run release:major  # x.0.0 (重大变更)
 ```
+
+**提交消息规范**：`feat:` → 次版本 | `fix:` → 补丁 | `feat!:` → 主版本
 
 详见 [RELEASE_GUIDE.md](RELEASE_GUIDE.md)
 

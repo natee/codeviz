@@ -5,7 +5,7 @@ Help()
    echo "你也可以使用自定义参数进行指定查询"
    echo
    echo "格式: bash $0 [2022-01-01] [2022-04-04] [author]"
-   echo "示例: bash codeviz.sh 2022-01-01 2022-12-31 digua"
+   echo "示例: bash codeviz.sh 2022-01-01 2022-12-31 natee"
    echo "参数:"
    echo "1st     分析的起始时间."
    echo "2nd     分析的结束时间."
