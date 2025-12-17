@@ -1,37 +1,41 @@
 # codeviz
 
-codeviz 是一个分析工具，它可以统计 Git 项目的 commit 时间分布，进而推导出项目的编码工作强度。
+[![npm version](https://badge.fury.io/js/codeviz.svg)](https://badge.fury.io/js/codeviz)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-它可以帮助你了解新团队工作的时间模式，识别潜在的加班文化。
+codeviz 是一个基于 Git 提交时间分析的 CLI 工具，用于识别项目的真实工作强度和加班文化。
 
-**使用方法很简单，一行命令即可开始：`npx codeviz`**
+**快速开始**：`npx codeviz`
 
+## 🎯 核心价值
 
-## 它的用途
+**用数据说话，打破信息不对称。**
 
-面试时我们会询问面试官加班情况，但得到的答案有时不那么真实。但是代码的提交时间不会骗人，因此就有了这个工具。
+面试时的口头承诺 vs 代码提交的真实时间 —— 哪个更可信？
 
-当你入职新公司，跑一下 `npx codeviz`，就可以看到数据背后的真相，从而判断这家公司的真实加班文化。
+codeviz 通过分析 Git 提交时间戳，帮你：
+- 🔍 **入职前背调**：让内推朋友帮忙跑一下，了解真实工作模式
+- ⚖️ **试用期验证**：入职后快速验证公司文化，及时止损
+- 📊 **决策支持**：已有确凿证据，作为转岗或离职的依据
 
-与其痛苦三个月，不如早点看清真相！别等到试用期结束才后悔！
+## ✨ 核心功能
 
-## 功能特性
-
-- **📊 996 指数**：将复杂的加班情况转化为直观数值，一眼看穿项目卷度
-- **🏆 卷王排行**：分析团队成员的996指数并生成排行榜，识别团队中的"卷王"
-- **🕰️ 智能工时推演**：采用分位数与拐点检测算法，精准还原团队真实的上下班时间窗口
-- **📈 月度趋势追踪**：通过趋势识别项目是“越来越卷”还是“趋于平稳”
-- **📅 多维度加班画像**：全方位分析，不仅识别工作日/周末加班高峰，还能识别团队成员的加班比例
-- **📦 多仓库对比**：支持一键扫描并分析文件夹下的多个仓库，自动生成对比
-- **🌍 跨时区检测**：自动识别时区分布，支持指定时区精准分析
-- **🇨🇳 节假日调休支持**：内置国内节假日调休逻辑，精准剔除调休干扰
-- **🔒 隐私安全**：纯本地运行，基于 git log 进行离线分析
+| 功能 | 说明 |
+|------|------|
+| **📊 996 指数** | 将加班情况转化为 0-100+ 的直观数值 |
+| **🏆 卷王排行** | 分析团队成员，识别"卷王"（可选） |
+| **🕰️ 智能工时** | 分位数+拐点算法，精准推算真实上下班时间 |
+| **📈 月度趋势** | 识别项目是"越来越卷"还是"趋于平稳" |
+| **📦 多仓库对比** | 一键扫描分析多个仓库，自动生成对比报告 |
+| **🌍 跨时区检测** | 自动识别时区分布，支持时区过滤 |
+| **🇨🇳 节假日调休** | 内置国内节假日逻辑，精准剔除调休干扰 |
+| **🔒 隐私安全** | 纯本地运行，数据不上云
 
 ## 预览
 
 #### 查看核心结果
 
-<img src="https://raw.githubusercontent.com/natee/codeviz/main/public/images/demo1.png" alt="核心结果预览" style="width:600px; max-width:100%; height:auto;"/>
+<img src="public/images/demo1.png" alt="核心结果预览" style="width:600px; max-width:100%; height:auto;"/>
 
 <details>
 <summary>
@@ -42,329 +46,214 @@ codeviz 是一个分析工具，它可以统计 Git 项目的 commit 时间分�
 
 #### 查看提交时间分布
 
-<img src="https://raw.githubusercontent.com/natee/codeviz/main/public/images/demo2.png" alt="提交时间分布图" style="width:400px; max-width:100%; height:auto;"/>
+<img src="public/images/demo2.png" alt="提交时间分布图" style="width:400px; max-width:100%; height:auto;"/>
 
 #### 加班情况分析
 
-<img src="https://raw.githubusercontent.com/natee/codeviz/main/public/images/demo3.png" alt="加班情况分析图" style="width:600px; max-width:100%; height:auto;"/>
+<img src="public/images/demo3.png" alt="加班情况分析图" style="width:600px; max-width:100%; height:auto;"/>
 
 #### 月度趋势分析
 
-<img src="https://raw.githubusercontent.com/natee/codeviz/main/public/images/demo4.png" alt="月度趋势分析图" style="width:600px; max-width:100%; height:auto;"/>
+<img src="public/images/demo4.png" alt="月度趋势分析图" style="width:600px; max-width:100%; height:auto;"/>
 
 #### 团队工作模式分析
 
-<img src="https://raw.githubusercontent.com/natee/codeviz/main/public/images/demo5.png" alt="团队工作模式分析图" style="width:600px; max-width:100%; height:auto;"/>
+<img src="public/images/demo5.png" alt="团队工作模式分析图" style="width:600px; max-width:100%; height:auto;"/>
 
 </details>
 
 ## 🚀 快速开始
 
-首先确保你本地有 Node.js环境，然后：
+### 安装方式
 
+**方式一：npx（无需安装）**
 ```bash
-# 在当前仓库或仓库上级目录运行
 npx codeviz
 ```
 
-你也可以选择安装后再使用，这样就不用每次都重新下载：
-
+**方式二：全局安装**
 ```bash
-# 全局安装
 pnpm i -g codeviz
-
-# 使用
 codeviz
 ```
 
-## 🔧 本地调试
+### 基础使用
 
-如果你想在本地开发或调试 codeviz，可以按照以下步骤操作：
+```bash
+# 在 Git 仓库中运行（自动分析）
+codeviz
+
+# 指定仓库路径
+codeviz /path/to/repo
+
+# 多仓库对比
+codeviz /path/to/workspace
+codeviz /path/proj1 /path/proj2
+```
+
+## 🔧 开发指南
 
 ### 环境准备
 
 ```bash
-# 1. 克隆仓库
 git clone https://github.com/natee/codeviz.git
 cd codeviz
-
-# 2. 安装依赖
 pnpm install
-
-# 3. 构建项目
 pnpm run build
 ```
 
-### 调试方法
-
-#### 方法一：使用 npm link（推荐）
+### 开发工作流
 
 ```bash
-# 在项目目录下创建全局链接
-pnpm link
-
-# 在任意目录使用（会使用你本地的代码）
-codeviz [options]
-
-# 测试完成后取消链接
-pnpm unlink
-```
-
-#### 方法二：直接运行构建后的代码
-
-```bash
-# 构建后直接运行
-pnpm run build
-node dist/index.js [options]
-
-# 或者使用 start 脚本
-pnpm start -- [options]
-```
-
-#### 方法三：使用 ts-node（无需构建）
-
-```bash
-# 安装 ts-node（如果尚未安装）
-pnpm install -g ts-node
-
-# 直接运行 TypeScript 源码
-ts-node src/index.ts [options]
-
-# 或者使用 package.json 中的脚本（如果已配置）
-# npx ts-node src/index.ts [options]
-```
-
-### 开发模式
-
-```bash
-# 监听文件变化并自动编译（推荐开发时使用）
+# 监听文件变化自动编译
 pnpm run dev
 
-# 在另一个终端窗口运行
+# 在另一个终端测试
 node dist/index.js [options]
+
+# 或使用 npm link 全局测试
+pnpm link
+codeviz [options]  # 在任意目录测试
+pnpm unlink
 ```
 
 ### 测试示例
 
 ```bash
-# 在 codeviz 项目目录下测试
-cd /path/to/test/repo  # 进入一个 Git 仓库
-node /path/to/codeviz/dist/index.js -y 2025 --hours 9-18
-
-# 或者使用 npm link 后
+# 测试单仓库
 cd /path/to/test/repo
 codeviz -y 2025 --hours 9-18
 
-# 测试多仓库分析
+# 测试多仓库
 codeviz /path/to/workspace
 
 # 测试卷王排行
-codeviz ranking -y 2025
+codeviz ranking -y 2025 --topN 5
 ```
 
-### 调试技巧
+**详见**：[开发和发布](#🚀-开发和发布)
+
+## 🤖 智能模式
+
+codeviz 自动检测环境并选择分析模式：
+
+- **Git 仓库中** → 单仓库深度分析
+- **多仓库目录** → 自动多仓库对比
 
 ```bash
-# 查看帮助信息
-node dist/index.js --help
-
-# 使用详细模式（如果支持）
-node dist/index.js [options] --verbose
-
-# 测试特定功能
-node dist/index.js --self -y 2025 --hours 9-18
-node dist/index.js ranking --topN 5 --merge-authors
+codeviz                    # 智能检测
+codeviz /path/to/repo      # 指定仓库
+codeviz /workspace         # 扫描子目录
 ```
 
-### 常见问题
+## 📖 使用指南
 
-**Q: 修改代码后需要重新构建吗？**
-A: 是的，修改 TypeScript 源码后需要重新运行 `pnpm run build` 或使用 `pnpm run dev` 自动构建。
+### 常用选项
 
-**Q: 如何测试不同的 Git 仓库？**
-A: 可以使用任何 Git 仓库进行测试，包括本项目自身：
-```bash
-cd /Users/zk/mi/code996
-node dist/index.js -y 2025
-```
+| 选项 | 简写 | 说明 |
+|------|------|------|
+| `--year <year>` | `-y` | 年份或范围：`2025` 或 `2023-2025` |
+| `--hours <range>` | `-H` | **推荐**：工作时间，如 `9-18` 或 `9.5-18.5` |
+| `--half-hour` | - | 半小时粒度（默认小时） |
+| `--timezone <offset>` | - | 时区过滤，如 `+0800` |
+| `--cn` | - | 强制中国节假日模式 |
+| `--self` | - | 只分析当前用户 |
+| `--ignore-author <regex>` | - | 排除作者，如 `bot\|jenkins` |
+| `--ignore-msg <regex>` | - | 排除提交信息，如 `^Merge` |
 
-**Q: 如何验证我的修改是否生效？**
-A: 可以在代码中添加临时的 console.log，然后重新构建并运行查看输出。
-
-## 🤖 智能分析模式
-
-codeviz 会根据上下文自动选择最合适的分析模式：
-
-- **在Git仓库中运行** → 单仓库深度分析
-- **目录下有多个仓库** → 自动进入多仓库分析模式
+### 典型场景
 
 ```bash
-# 智能检测，自动选择分析模式
-codeviz                    # 智能检测当前环境
-codeviz /path/to/repo      # 分析指定仓库
-codeviz /proj1 /proj2      # 自动进入多仓库模式
-codeviz /workspace         # 自动扫描子目录
+# 基础分析（推荐带工时参数）
+codeviz -y 2025 --hours 9-18
+
+# 卷王排行
+codeviz ranking -y 2025 --topN 5
+
+# 多仓库对比
+codeviz /workspace -y 2025
+
+# 个人分析
+codeviz --self -y 2025 --hours 9-18
+
+# 跨时区项目
+codeviz -y 2025 --timezone "+0800"
+
+# 过滤噪音
+codeviz -y 2025 --ignore-author "bot|jenkins" --ignore-msg "^Merge"
 ```
 
-## 📖 详细使用说明
+### 完整参数表
 
-### 时间范围选项
+<details>
+<summary>展开查看所有参数</summary>
 
-| 选项             | 简写 | 描述                                                        |
-| ---------------- | ---- | ----------------------------------------------------------- |
-| `--year <year>`  | `-y` | 指定年份或年份范围（推荐）。单年：`2025`；范围：`2023-2025` |
-| `--since <date>` | `-s` | 自定义开始日期 (YYYY-MM-DD)                                 |
-| `--until <date>` | `-u` | 自定义结束日期 (YYYY-MM-DD)                                 |
-| `--all-time`     | -    | 覆盖整个仓库历史数据                                        |
+#### 时间范围
+- `--year <year>` / `-y`: 年份或范围（`2025` 或 `2023-2025`）
+- `--since <date>` / `-s`: 开始日期（`YYYY-MM-DD`）
+- `--until <date>` / `-u`: 结束日期（`YYYY-MM-DD`）
+- `--all-time`: 全部历史
 
-### 筛选与展示选项
+#### 分析选项
+- `--hours <range>` / `-H`: 标准工作时间（`9-18` 或 `9.5-18.5`）⭐ **推荐**
+- `--half-hour`: 半小时粒度展示
+- `--timezone <offset>`: 时区过滤（`+0800`、`-0700`）
+- `--cn`: 强制中国节假日模式
+- `--self`: 仅当前用户
 
-| 选项                      | 简写 | 描述                                                               |
-| ------------------------- | ---- | ------------------------------------------------------------------ |
-| `--hours <range>`         | `-H` | 手动指定标准工作时间（如 9-18）⭐ **推荐使用，可获得更准确的结果** |
-| `--half-hour`             | -    | 以半小时粒度展示时间分布（默认按小时）📊 更精确                    |
-| `--timezone <offset>`     | -    | 指定时区进行分析（如 +0800、-0700）🌍 适用于跨时区团队             |
-| `--cn`                    | -    | 强制开启中国节假日调休模式（+0800 时区自动启用）                   |
-| `--self`                  | -    | 仅统计当前 Git 用户的提交记录                                      |
-| `--ignore-author <regex>` | -    | 排除匹配正则的作者（如 `bot\|jenkins`）                            |
-| `--ignore-msg <regex>`    | -    | 排除匹配正则的提交信息（如 `^Merge\|lint`）                        |
+#### 过滤选项
+- `--ignore-author <regex>`: 排除作者（`bot|jenkins`）
+- `--ignore-msg <regex>`: 排除提交信息（`^Merge`）
 
-### 使用示例
+#### 卷王排行专用
+- `--topN <number>`: 显示前N名
+- `--author <name>`: 分析特定作者
+- `--exclude-authors <list>`: 排除多个作者（逗号分隔）
+- `--merge-authors`: 合并同名不同邮箱
+- `--min-commits <number>`: 最少提交数阈值
 
-```bash
-# ===== 卷王排行（团队成员分析） =====
-codeviz ranking                # 分析最近一年的卷王排行
-codeviz ranking -y 2025        # 分析2025年的卷王排行
-codeviz ranking --topN 5       # 显示前5名
-codeviz ranking --all-time     # 分析所有历史数据
-codeviz ranking --self         # 只分析自己的提交
-codeviz ranking --author "张三" # 分析特定作者的详细信息
-codeviz ranking --exclude-authors bot,CI  # 排除机器人账号
-codeviz ranking --merge-authors # 合并同名不同邮箱的作者
-codeviz ranking --min-commits 10 # 设置最少提交数阈值
+</details>
 
-# ===== 单仓库分析（智能模式） =====
-codeviz                        # 分析当前仓库（最近一年）
-codeviz /path/to/repo          # 分析指定仓库
-codeviz -y 2025                # 分析2025年
-codeviz -y 2023-2025           # 分析2023-2025年
-codeviz --all-time             # 查询整个仓库历史
-codeviz --self                 # 只分析当前用户的提交
-codeviz --self -y 2025         # 分析自己在2025年的提交
+## 🔍 工作原理
 
-# ===== 多仓库分析（智能自动检测） =====
-codeviz                        # 如果子目录有多个仓库，自动进入多仓库模式
-codeviz /path/proj1 /path/proj2  # 传入多个路径，自动分析多个仓库
-codeviz /workspace             # 扫描指定目录的所有子仓库
-codeviz /workspace -y 2025     # 分析2025年的数据和趋势
-codeviz --self                 # 只统计当前用户在所有仓库中的提交
-
-# 手动指定工时（推荐）
-codeviz --hours 9.5-18.5       # 指定 9:30-18:30（支持小数）
-codeviz --hours 9.5-19 -y 2025 # 结合年份分析
-
-# 精细分析（半小时粒度）
-codeviz --half-hour            # 以半小时粒度展示时间分布
-codeviz -y 2025 --half-hour    # 结合年份分析，精细展示
-codeviz /proj1 /proj2 --half-hour  # 多仓库分析，半小时粒度展示
-
-# 跨时区项目分析
-codeviz --timezone="+0800"     # 只分析东八区（中国）的提交
-codeviz --timezone="-0700"     # 只分析西七区（美国西海岸）的提交
-codeviz -y 2025 --timezone="+0800"  # 分析2025年特定时区的提交
-
-# 中国节假日调休分析
-codeviz                        # 系统自动检测主要时区为 +0800 时，会自动启用节假日调休
-codeviz --cn                   # 手动强制开启节假日调休模式（适用于非 +0800 时区项目）
-codeviz --timezone="-0700" --cn # 分析非中国时区项目，但需要按中国节假日调休判断
-
-# 过滤噪音数据（排除 CI/CD 机器人、合并提交等）
-codeviz --ignore-author "bot"                    # 排除所有包含 "bot" 的作者
-codeviz --ignore-author "bot|jenkins|github-actions"  # 排除多个作者（使用 | 分隔）
-codeviz --ignore-msg "^Merge"                    # 排除所有以 "Merge" 开头的提交消息
-codeviz --ignore-msg "merge|lint|format"         # 排除多个关键词
-codeviz -y 2025 --ignore-author "renovate|dependabot" --ignore-msg "^Merge" # 综合过滤
-```
-
-**常见排除场景**：
-
-```bash
-# 排除所有 CI/CD 机器人
---ignore-author "bot|jenkins|github-actions|gitlab-ci|circleci|travis"
-
-# 排除依赖更新机器人
---ignore-author "renovate|dependabot|greenkeeper"
-
-# 排除合并和格式化提交
---ignore-msg "^Merge|^merge|lint|format|prettier"
-
-# 排除自动生成的提交
---ignore-msg "^chore|^build|^ci|auto"
-```
-
-## 它怎样工作
-
-1. 使用 git-log 获取项目 commit 的相关数据
-2. 本地计算分析，并打印出展示结果
-
-### 数据采集流程
+### 数据流程
 
 ```
-Git 仓库 → git log 采集 → 日级首提 + 小时分布 → 分位数推算上/下班 → 996 指数计算 → 结果输出
+Git 仓库 → git log 采集 → 时间分布分析 → 分位数算法 → 996 指数计算 → 结果输出
 ```
 
-### 关键算法
+### 核心算法
 
-1. **时间分布分析**：
-   - 数据采集：按分钟级别采集提交时间，自动聚合为48个半小时点
-   - 算法处理：自动聚合为24小时用于工作时间识别和996指数计算
-   - 展示模式：默认按小时展示（24点），可选半小时模式（48点）
-2. **工作时间识别**：使用最近样本的 10%-20% 分位估算上班时间区间，并结合晚间提交拐点推算下班时间
-3. **996 指数计算**：依据加班比例构建指数，并输出中文描述
-4. **项目类型识别** ：通过工作时间规律性、周末活跃度、晚间活跃模式，自动识别项目是"公司项目"还是"开源项目"
-5. **跨时区协作检测**：通过时区离散度和"睡眠时段"提交比例识别跨时区项目（阈值：非主导时区 >1%），并提供时区过滤建议
-6. **节假日调休识别**：当主要时区为 +0800 且占比超过 50% 时，自动启用中国节假日调休判断（工作日/周末会考虑法定节假日和调休），其他时区可通过 `--cn` 参数手动开启
-7. **数据验证**：检验统计数据是否与总提交数一致，避免缺失导致的偏差
-8. **算法优势**：新版本采用分位数与拐点估算，能更智能地排除深夜零星提交的干扰，精准定位真实的工作时间窗口
+1. **时间分布**：分钟级采集 → 48个半小时点 → 24小时聚合
+2. **工时识别**：10-20% 分位数 + 晚间拐点检测
+3. **996 指数**：加班比例 × 3（0-30健康，30-60中度，60-100严重，100+极端）
+4. **项目分类**：工作规律性 + 周末/晚间活跃度 → 公司/开源项目
+5. **跨时区检测**：非主导时区 >1% 或睡眠时段提交 >10%
+6. **节假日调休**：+0800 时区占比 >50% 自动启用
 
-## 使用提示
+### 隐私与局限
 
-- 隐私保护：所有对 Git 数据的分析均在本地进行，不会上传任何结果或日志。
-- 分析局限性：工具仅统计 git log 中的 commit 时间。然而，实际工作还包括开会、学习、维护文档、调试自测等活动。因此，报告无法覆盖全部的实际工作时间，分析结果准确性有限，请谨慎参考。
-- 使用限制：本项目分析结果仅供个人参考，请勿用于 “作恶” 或不当用途。
-- 免责声明：codeviz 不对使用、传播本程序及附属产物造成的任何后果承担任何责任。
+- ✅ **纯本地运行**：数据不上云，基于 git log 离线分析
+- ⚠️ **统计局限**：仅分析 commit 时间，不包含会议、文档、调试等活动
+- 📊 **参考价值**：结果仅供个人决策参考，不应用于绩效考核
 
-## 其他疑问
+## 🛡️ 常见疑问
 
-> 以下是一些常见问题，如果你有其他问题，欢迎随时提出issue。
+### 💡 入职后使用是否太晚？
 
-### 💡 拿到代码才能分析，入职了再用岂不是马后炮？
+不晚。三个场景：
+1. **试用期验证**：入职即"验货"，发现天坑及时止损
+2. **内推背调**：找朋友帮忙分析，硬核背调
+3. **决策依据**：已有证据支持转岗或离职
 
-并非如此。codeviz 的核心价值在于打破信息差，用真实数据对抗口头画饼。
+### 📉 Squash 提交会影响准确性吗？
 
-1. 试用期即“验货期”：入职不代表卖身。法律规定的试用期也是我们对公司的考察期。如果第一天就发现是天坑，趁早止损也是一种避坑策略。
-2. 内推时背调：格局打开！你完全可以找在那家公司工作的内鬼朋友帮忙跑一下。这不就是最硬核的内推背调吗？🐶
-3. 决策依据：哪怕已经入职，有一份确凿的加班证据在手，无论是以此为由转岗，还是作为离职的决断依据，都比自我怀疑要强得多。
+不会。统计学规律下，大量样本会过滤掉个别噪声。
 
-### 📉 项目习惯本地多次提交后 Squash 再推送，会影响准确性吗？
 
-影响会有，但 codeviz 依赖的是统计学规律，只要 commit 样本达到一定数量，最终呈现的是团队整体的集体工作模式，特殊提交习惯在统计学上会被视为“噪声”被过滤掉。
+### 🚀 未来规划？
 
-### 🛡️ 为什么不支持查看项目成员的996指数？
-
-虽然技术上可以实现，但最终刻意放弃了这个功能：
-
-按用户查看 996 指数，这个功能太容易被异化和滥用了，它很容易被一些人拿去分析团队成员的“加班情况”。
-
-虽然我前面已经不止一次强调了工具的局限性（实际工作还包括开会、学习、维护文档、调试自测等等），但你就是拦不住有些人只看数字🤦
-
-这个项目的初衷是用来避坑项目的，而不是给内卷提供新的弹药。因此，项目只提供看团队和看自己（--self）两种视角。
-
-最后，代码提交量和时间点不等于工作产出。如果将其用于绩效考核，不仅会导致团队为了刷数据而产生大量垃圾提交，更会破坏团队的信任。
-
-### 🚀 项目接下来的路线？
-
-接下来的功能都会沿着 WLB 和工作避坑的路线来开发，包括：更精细的加班比例分析、以及分析代码的屎山指数（复杂度分析），毕竟维护屎山也是导致 996 的罪魁祸首之一。
+沿着 WLB 路线：更精细的加班分析 + 代码复杂度（屎山指数）分析。
 
 ## 🚀 开发和发布
 
@@ -373,22 +262,20 @@ Git 仓库 → git log 采集 → 日级首提 + 小时分布 → 分位数推�
 pnpm install
 pnpm run dev
 
-# 发布（自动测试、构建、更新版本、创建标签）
-pnpm run release
-
-# 快速发布
-pnpm run release:patch  # 0.0.x (Bug 修复)
-pnpm run release:minor  # 0.x.0 (新功能)
-pnpm run release:major  # x.0.0 (重大变更)
+# 发布
+pnpm run release          # 自动测试、构建、版本更新、打标签
+pnpm run release:patch    # Bug 修复 (0.0.x)
+pnpm run release:minor    # 新功能 (0.x.0)
+pnpm run release:major    # 重大变更 (x.0.0)
 ```
 
-**提交消息规范**：`feat:` → 次版本 | `fix:` → 补丁 | `feat!:` → 主版本
+**提交规范**：`feat:` → 次版本 | `fix:` → 补丁 | `feat!:` → 主版本
 
-详见 [RELEASE_GUIDE.md](RELEASE_GUIDE.md)
+**详见**：[RELEASE_GUIDE.md](RELEASE_GUIDE.md)
 
-## AI 和协作
+## 🤖 AI 协作
 
-🤖 **AI 协作伙伴注意**：本项目采用标准化的 AI 协作流程，详情请查看 [.docs/README.md](.docs/README.md) 中的协作规范。
+本项目采用标准化 AI 协作流程，详见 [.docs/README.md](.docs/README.md)
 
 ## 📄 许可证
 
