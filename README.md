@@ -6,9 +6,6 @@ code996 是一个分析工具，它可以统计 Git 项目的 commit 时间分�
 
 **使用方法很简单，一行命令即可开始：`npx code996`**
 
-<!-- > 该项目为 Node.js 新版本，功能更强大，旧版已迁移至 [code996-web](https://github.com/hellodigua/code996-web) -->
-
-简体中文 | [English](./README_en.md)
 
 ## 它的用途
 
