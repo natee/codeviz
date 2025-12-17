@@ -85,6 +85,18 @@ export interface WorkTimeData {
 export interface Result996 {
   index996: number
   index996Str: string
+  /**
+   * 加班率（百分比，数值本身代表 %，例如 8 表示 8 而不是 0.08）
+   * 计算公式：ceil( ( x + (y * n) / (m + n) ) / (x + y) * 100 )
+   *   x = 工作日加班时间段提交次数（工作日下班后）
+   *   y = 工作日正常工作时间段提交次数（推断出的工作窗口内）
+   *   m = 工作日所有提交次数
+   *   n = 周末所有提交次数
+   * 周末修正：将周末的工作按 (y * n)/(m + n) 折算为等效“加班提交”并与 x 相加，弱化周末少量零散提交的噪声。
+   * 负值含义：初算加班率为 0 且样本小时数 < 9 时，表示工作量极低，会调用 getUn996Radio 推算“工作不饱和度”，返回一个负百分比（例如 -88 表示比标准 9 小时产能低 88%）。
+   * 取值范围：正常 >= 0 且 <= 100；仅在低样本低工作量场景可能出现 < 0。
+   * 展示规范：输出中统一追加 '%'；负值代表“工作不饱和”而非加班。
+   */
   overTimeRadio: number
 }
 
@@ -250,6 +262,13 @@ export interface AnalyzeOptions {
   skipUserAnalysis?: boolean // 是否跳过团队工作模式分析
   maxUsers?: number // 最大分析用户数（默认30）
   cn?: boolean // 强制开启中国节假日调休模式
+  // 卷王排行特有选项
+  author?: string // 分析特定作者
+  excludeAuthors?: string // 排除作者（逗号分隔）
+  mergeAuthors?: boolean // 合并同名不同邮箱的作者
+  topN?: number // 显示前N名
+  minCommits?: number // 最少提交数阈值
+  path?: string // 目标路径（用于ranking命令）
 }
 
 /**
@@ -302,6 +321,66 @@ export interface UserWorkPattern {
     totalOvertime: number // 总加班提交数
   }
   intensityLevel?: WorkIntensityLevel // 工作强度等级
+}
+
+// ====== 以下是卷王排行功能的新增类型 ======
+
+/**
+ * 卷王排行数据项
+ */
+export interface RankingItem {
+  rank: number // 排名
+  author: string // 作者名
+  email: string // 邮箱
+  totalCommits: number // 总提交数
+  index996: number // 996指数
+  overtimeRate: number // 加班率（百分比）
+  weekendRatio: number // 周末提交占比（百分比）
+  workdayOvertime: number // 工作日加班提交数
+  weekendOvertime: number // 周末加班提交数
+  workHours: number // 工作时间提交数
+  intensityLevel: WorkIntensityLevel // 工作强度等级
+}
+
+/**
+ * 卷王排行结果
+ */
+export interface RankingResult {
+  items: RankingItem[] // 排行列表
+  summary: {
+    totalAuthors: number // 总作者数
+    analyzedAuthors: number // 分析的作者数
+    avgIndex996: number // 平均996指数
+    medianIndex996: number // 中位数996指数
+    highestIndex996: number // 最高996指数
+    lowestIndex996: number // 最低996指数
+    topAuthor?: string // 卷王第一名
+    topEmail?: string // 卷王邮箱
+  }
+  metadata: {
+    timeRange: {
+      since: string
+      until: string
+    }
+    totalCommits: number
+    filterThreshold: number // 过滤阈值（最少提交数）
+  }
+}
+
+/**
+ * 卷王排行命令选项
+ */
+export interface RankingOptions {
+  since?: string
+  until?: string
+  allTime?: boolean
+  year?: string
+  author?: string // 分析特定作者
+  excludeAuthors?: string // 排除作者（逗号分隔）
+  mergeAuthors?: boolean // 合并同名不同邮箱的作者
+  hours?: string // 工作时间范围
+  topN?: number // 显示前N名（默认10）
+  minCommits?: number // 最少提交数阈值（默认5）
 }
 
 /**

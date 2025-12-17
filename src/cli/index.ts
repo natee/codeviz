@@ -28,6 +28,10 @@ export class CLIManager {
 
     // 注册根命令默认行为，直接执行分析逻辑
     this.setupDefaultAnalyzeAction()
+
+    // 注册 ranking 命令
+    this.setupRankingAction()
+
     this.addHelpCommand()
 
     // 错误处理
@@ -163,6 +167,49 @@ export class CLIManager {
     const { MultiExecutor } = await import('./commands/multi')
     await MultiExecutor.execute(dirs, mergedOptions, preScannedRepos)
     printGlobalNotices()
+  }
+
+  /** 注册卷王排行命令 */
+  private setupRankingAction(): void {
+    this.program
+      .command('ranking')
+      .description('卷王排行 - 分析团队成员的996指数并排序')
+      .argument('[path]', 'Git 仓库路径（默认当前目录）')
+      .option('-s, --since <date>', '开始日期 (YYYY-MM-DD)')
+      .option('-u, --until <date>', '结束日期 (YYYY-MM-DD)')
+      .option('-y, --year <year>', '指定年份或年份范围 (例如: 2025 或 2023-2025)')
+      .option('--all-time', '查询所有时间的数据')
+      .option('--author <name>', '分析特定作者')
+      .option('--exclude-authors <names>', '排除作者 (逗号分隔, 如: bot,CI)')
+      .option('--merge-authors', '合并同名不同邮箱的作者')
+      .option('--hours <range>', '手动指定标准工作时间 (例如: 9-18 或 9.5-18.5)')
+      .option('--topN <number>', '显示前N名（默认10）', parseInt)
+      .option('--min-commits <number>', '最少提交数阈值（默认5）', parseInt)
+      .option('--timezone <offset>', '指定时区进行分析 (例如: +0800, -0700)')
+      .action(async (path: string | undefined, cmdOptions: any, command: Command) => {
+        // 合并全局选项
+        const globalOpts = command.parent?.opts() || {}
+        const options: AnalyzeOptions = {
+          ...cmdOptions,
+          path: path || process.cwd(),
+          self: cmdOptions.self ?? globalOpts.self,
+          allTime: cmdOptions.allTime ?? globalOpts.allTime,
+          since: cmdOptions.since ?? globalOpts.since,
+          until: cmdOptions.until ?? globalOpts.until,
+          year: cmdOptions.year ?? globalOpts.year,
+          hours: cmdOptions.hours ?? globalOpts.hours,
+          timezone: cmdOptions.timezone ?? globalOpts.timezone,
+        }
+
+        // 处理作者排除（逗号分隔转为管道分隔）
+        if (cmdOptions.excludeAuthors) {
+          options.ignoreAuthor = cmdOptions.excludeAuthors.split(',').join('|')
+        }
+
+        // 执行排行分析
+        const { RankingExecutor } = await import('./commands/ranking')
+        await RankingExecutor.execute(options.path!, options)
+      })
   }
 
   /** 合并全局选项（解决子命令无法直接读取根命令参数的问题） */

@@ -121,6 +121,43 @@ npx code996 [options]
 
 ### 关键命令与选项
 
+#### 卷王排行（团队成员分析）
+```bash
+# 基础排行分析 (最近一年)
+code996 ranking
+
+# 指定年份或范围
+code996 ranking -y 2025
+code996 ranking -y 2023-2025
+
+# 显示前N名
+code996 ranking --topN 5
+
+# 全量历史
+code996 ranking --all-time
+
+# 仅分析个人提交
+code996 ranking --self
+
+# 分析特定作者
+code996 ranking --author "张三"
+
+# 排除机器人账号
+code996 ranking --exclude-authors bot,CI,github-actions
+
+# 合并同名不同邮箱的作者
+code996 ranking --merge-authors
+
+# 设置最少提交数阈值
+code996 ranking --min-commits 10
+
+# 自定义工作时间
+code996 ranking --hours 9.5-18.5
+
+# 时区过滤
+code996 ranking --timezone "+0800"
+```
+
 #### 单仓库分析
 ```bash
 # 基础分析 (最近一年)

@@ -5,6 +5,7 @@ import { TimeCollector } from './collectors/time-collector'
 import { CommitCollector } from './collectors/commit-collector'
 import { ContributorCollector } from './collectors/contributor-collector'
 import { TimezoneCollector } from './collectors/timezone-collector'
+import { AuthorCollector } from './collectors/author-collector'
 
 /**
  * Git数据采集主类
@@ -15,6 +16,7 @@ export class GitCollector extends BaseCollector {
   private commitCollector: CommitCollector
   private contributorCollector: ContributorCollector
   private timezoneCollector: TimezoneCollector
+  private authorCollector: AuthorCollector
 
   constructor() {
     super()
@@ -22,6 +24,7 @@ export class GitCollector extends BaseCollector {
     this.commitCollector = new CommitCollector()
     this.contributorCollector = new ContributorCollector()
     this.timezoneCollector = new TimezoneCollector()
+    this.authorCollector = new AuthorCollector()
   }
 
   /**
@@ -114,5 +117,24 @@ export class GitCollector extends BaseCollector {
       }
       throw error
     }
+  }
+
+  /**
+   * 获取作者统计信息（用于卷王排行）
+   * @param options Git日志选项
+   * @returns 作者统计映射
+   */
+  async getAuthorStats(options: GitLogOptions): Promise<Map<string, any>> {
+    return this.authorCollector.getAuthorStats(options)
+  }
+
+  /**
+   * 获取特定作者的详细提交信息
+   * @param options Git日志选项
+   * @param author 作者名
+   * @returns 提交时间列表
+   */
+  async getAuthorCommits(options: GitLogOptions, author: string): Promise<Array<{ date: string; hours: number; weekday: number }>> {
+    return this.authorCollector.getAuthorCommits(options, author)
   }
 }

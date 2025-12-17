@@ -19,6 +19,7 @@ Instead of suffering for three months, better see the truth early! Don't wait un
 ## Features
 
 - **📊 996 Index**: Convert complex overtime situations into intuitive numbers, see project intensity at a glance
+- **🏆 Ranking**: Analyzes team members' 996 indices and generates leaderboards to identify "overwork kings"
 - **🕰️ Smart Working Hours Detection**: Uses percentile and inflection point detection algorithms to accurately reconstruct team's real start/end work time windows
 - **📈 Monthly Trend Tracking**: Identify whether the project is "getting more intense" or "stabilizing" through trends
 - **📅 Multi-dimensional Overtime Profile**: Comprehensive analysis, identifying not only weekday/weekend overtime peaks but also the overtime ratio of team members
@@ -118,6 +119,17 @@ code996 /workspace         # Auto-scan subdirectories
 ### Usage Examples
 
 ```bash
+# ===== Ranking (Team Member Analysis) =====
+code996 ranking                # Analyze past year's ranking
+code996 ranking -y 2025        # Analyze 2025 ranking
+code996 ranking --topN 5       # Show top 5
+code996 ranking --all-time     # Analyze all history
+code996 ranking --self         # Only analyze your commits
+code996 ranking --author "John" # Analyze specific author details
+code996 ranking --exclude-authors bot,CI  # Exclude bot accounts
+code996 ranking --merge-authors # Merge same name, different email
+code996 ranking --min-commits 10 # Set minimum commit threshold
+
 # ===== Single Repo Analysis (Smart Mode) =====
 code996                        # Analyze current repo (past year)
 code996 /path/to/repo          # Analyze specified repo
