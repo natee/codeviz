@@ -59,7 +59,7 @@ if ($PSVersionTable.PSVersion.Major -lt 7) {
         $result = $StartDateStr + "_$EndDateStr&week=$outputByDay&hour=$outputByHour"
 
         # url
-        $GithubUrl = "https://hellodigua.github.io/code996/#/result?time=$result"
+        $GithubUrl = "https://natee.github.io/codeviz/#/result?time=$result"
         $VercelUrl = "https://code996.vercel.app/#/result?time=$result"
 
 

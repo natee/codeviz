@@ -121,7 +121,7 @@ by_hour_result=`echo "$by_hour_result"|sed -E 's/,$//g'`
 result=$time_start"_"$time_end"&week="$by_day_result"&hour="$by_hour_result
 
 # url
-github_url="https://hellodigua.github.io/code996/#/result?time=$result"
+github_url="https://natee.github.io/codeviz/#/result?time=$result"
 vercel_url="https://code996.vercel.app/#/result?time=$result"
 
 echo

@@ -1,6 +1,6 @@
 {
   "name": "code996",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "统计 Git commit 的时间分布，进而推导出项目的编码工作强度",
   "main": "dist/index.js",
   "bin": {
@@ -21,7 +21,10 @@
     "cli"
   ],
   "author": "natee",
-  "repository": "natee/code996",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/natee/codeviz"
+  },
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^29.5.12",

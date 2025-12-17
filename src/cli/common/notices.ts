@@ -12,6 +12,6 @@ export function printGlobalNotices(): void {
   console.log(`  ● 使用限制：${chalk.bold('本项目分析结果仅供个人参考，请勿用于"作恶"或不当用途')}。`)
   console.log('  ● 命令说明：使用 code996 help 查看更多命令。')
   console.log()
-  console.log(`  其他说明请参考 Github：${chalk.cyan.bold('https://github.com/hellodigua/code996')}`)
+  console.log(`  其他说明请参考 Github：${chalk.cyan.bold('https://github.com/natee/codeviz')}`)
   console.log()
 }

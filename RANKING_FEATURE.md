@@ -275,14 +275,6 @@ code996 ranking --hours 9-18
 code996 ranking --author "异常作者"
 ```
 
-## 📚 相关资源
-
-- [原版 MR 代码](https://github.com/hellodigua/code996/pull/2)
-- [996 指数计算原理](https://github.com/hellodigua/code996/blob/main/.docs/techStack.md)
-- [Git Log 分析最佳实践](https://git-scm.com/docs/git-log)
-
----
-
 **最后更新**: 2025-12-17  
 **版本**: 1.0.0  
 **维护者**: Code996 开发团队
