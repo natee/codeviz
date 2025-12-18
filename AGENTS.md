@@ -15,7 +15,7 @@
 - **运行时**: Node.js >= 16.0.0
 - **CLI 框架**: Commander.js
 - **终端 UI**: Chalk (颜色), Ora (加载动画), CLI-Table3 (表格)
-- **测试**: Jest + ts-jest
+- **测试**: Vitest + @vitest/coverage-v8
 - **构建**: TypeScript Compiler (tsc)
 
 ## 🏗️ 架构与结构
@@ -74,7 +74,7 @@
 │   └── projectRoadmap.md       # 未来计划
 ├── package.json
 ├── tsconfig.json
-├── jest.config.js
+├── vitest.config.ts
 └── README.md
 ```
 
@@ -103,6 +103,12 @@ pnpm run dev
 
 # 运行测试
 pnpm test
+
+# 测试 UI (浏览器界面)
+pnpm run test:ui
+
+# 测试覆盖率
+pnpm run test:coverage
 
 # 手动 CLI 测试
 pnpm start -- [options]
@@ -210,6 +216,15 @@ codeviz /workspace --self --year 2025
 # 单元测试
 pnpm test
 
+# 测试监听模式
+pnpm run test:watch
+
+# 测试 UI (浏览器界面)
+pnpm run test:ui
+
+# 测试覆盖率
+pnpm run test:coverage
+
 # 类型检查
 npx tsc --noEmit
 
@@ -314,7 +329,9 @@ const index996 = overtimeRatio * 3;
 
 #### 测试结构
 ```typescript
-// 单元测试示例
+// 单元测试示例 (Vitest)
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+
 describe('FunctionName', () => {
   describe('Edge Cases', () => {
     it('should handle empty input', () => {
@@ -327,6 +344,14 @@ describe('FunctionName', () => {
       // 测试实现
     });
   });
+
+  describe('Mocking', () => {
+    beforeEach(() => {
+      vi.mock('module-name', () => ({
+        functionName: vi.fn(() => 'mocked')
+      }))
+    })
+  })
 });
 ```
 
@@ -432,6 +457,7 @@ try {
 - [ ] **类型检查**: `npx tsc --noEmit` 通过
 - [ ] **格式检查**: `npx prettier --check src/` 通过
 - [ ] **单元测试**: `pnpm test` 通过
+- [ ] **测试覆盖率**: `pnpm run test:coverage` 检查
 - [ ] **构建**: `pnpm run build` 成功
 - [ ] **手动 CLI 测试**: 使用真实仓库测试关键命令
 

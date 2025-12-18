@@ -94,7 +94,7 @@
 - **代码风格**: Prettier 统一格式化（单引号、120字符行宽、ES5尾逗号）
 - **命名规范**: 语义化命名，避免缩写，使用驼峰命名法
 - **注释要求**: 复杂算法和业务逻辑必须添加清晰注释
-- **测试要求**: Jest 单元测试，确保核心功能稳定性
+- **测试要求**: Vitest 单元测试，确保核心功能稳定性
 
 ## 质量保证
 
@@ -105,7 +105,9 @@
 
 - [ ] TypeScript 类型检查通过（`npx tsc --noEmit`）
 - [ ] Prettier 代码格式化检查（`npx prettier --check src/`）
-- [ ] Jest 单元测试通过（`pnpm test`）
+- [ ] Vitest 单元测试通过（`pnpm test`）
+- [ ] 测试 UI 验证（`pnpm run test:ui` - 可选）
+- [ ] 测试覆盖率检查（`pnpm run test:coverage`）
 - [ ] CLI 命令功能正常（手动测试各种参数组合）
 - [ ] 输出格式正确（表格对齐、颜色显示、自适应宽度）
 - [ ] 跨平台兼容性（Windows、macOS、Linux 基本功能测试）

@@ -218,7 +218,7 @@ const index996 = overTimeRadio * 3
 
 ### 测试与构建
 
-- **Jest**: 单元测试框架
+- **Vitest**: 单元测试框架
 - **TypeScript Compiler**: 代码编译
 - **NPM Scripts**: 构建和部署脚本
 

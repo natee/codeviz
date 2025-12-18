@@ -120,6 +120,15 @@ pnpm unlink
 ### 测试示例
 
 ```bash
+# 运行单元测试
+pnpm test
+
+# 测试 UI (浏览器界面)
+pnpm run test:ui
+
+# 测试覆盖率
+pnpm run test:coverage
+
 # 测试单仓库
 cd /path/to/test/repo
 codeviz -y 2025 --hours 9-18
@@ -261,6 +270,12 @@ Git 仓库 → git log 采集 → 时间分布分析 → 分位数算法 → 996
 # 开发
 pnpm install
 pnpm run dev
+
+# 测试
+pnpm test              # 运行测试
+pnpm run test:watch    # 监听模式
+pnpm run test:ui       # 浏览器 UI 界面
+pnpm run test:coverage # 测试覆盖率
 
 # 发布
 pnpm run release          # 自动测试、构建、版本更新、打标签

@@ -173,7 +173,7 @@ export class CLIManager {
   /** 注册卷王排行命令 */
   private setupRankingAction(): void {
     this.program
-      .command('ranking')
+      .command('ranking1')
       .description('卷王排行 - 分析团队成员的996指数并排序')
       .argument('[path]', 'Git 仓库路径（默认当前目录）')
       .option('-s, --since <date>', '开始日期 (YYYY-MM-DD)')
@@ -406,5 +406,10 @@ ${chalk.bold('更多详情请访问:')} https://github.com/natee/codeviz
   /** 启动 CLI 参数解析入口 */
   parse(argv: string[]): void {
     this.program.parse(argv)
+  }
+
+  /** 启动 CLI 参数解析入口（异步版本，用于测试） */
+  async parseAsync(argv: string[]): Promise<void> {
+    await this.program.parseAsync(argv)
   }
 }
