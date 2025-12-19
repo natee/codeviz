@@ -69,25 +69,20 @@ export class RankingAnalyzer {
     }
 
     // 5. 生成三种排行榜（深拷贝以保持独立的排名）
-    const topN = options.topN || 10
-
     // 按代码量排序
     const byLines = rankingItems.map(item => ({ ...item }))
     this.sortRankingItems(byLines, 'lines')
     this.assignRanks(byLines)
-    const topByLines = byLines.slice(0, topN)
 
     // 按提交数排序
     const byCommits = rankingItems.map(item => ({ ...item }))
     this.sortRankingItems(byCommits, 'commits')
     this.assignRanks(byCommits)
-    const topByCommits = byCommits.slice(0, topN)
 
     // 按996指数排序
     const byIndex996 = rankingItems.map(item => ({ ...item }))
     this.sortRankingItems(byIndex996, 'index996')
     this.assignRanks(byIndex996)
-    const topByIndex996 = byIndex996.slice(0, topN)
 
     // 6. 生成摘要（基于996指数排行）
     const summary = this.generateSummary(byIndex996)
@@ -95,15 +90,17 @@ export class RankingAnalyzer {
     // 7. 获取时间范围
     const timeRange = await this.getTimeRange(options)
 
+    // 返回完整数据（在打印时根据 format 和 topN 决定显示多少）
     return {
-      byLines: topByLines,
-      byCommits: topByCommits,
-      byIndex996: topByIndex996,
+      byLines,
+      byCommits,
+      byIndex996,
       summary,
       metadata: {
         timeRange,
         totalCommits: await this.getTotalCommits(options),
         filterThreshold: minCommits,
+        topN: options.topN || 10, // 保存 topN 供打印时使用
       },
     }
   }
@@ -138,6 +135,16 @@ export class RankingAnalyzer {
     // 解析作者名和邮箱
     const { name, email } = this.parseAuthor(author)
 
+    // 计算周末加班天数（周末有提交的不同日期数）
+    const weekendDates = new Set<string>()
+    stat.commitDates.forEach((commit: any) => {
+      // weekday: 0=周日, 6=周六
+      if (commit.weekday === 0 || commit.weekday === 6) {
+        weekendDates.add(commit.date)
+      }
+    })
+    const weekendWorkDays = weekendDates.size
+
     return {
       rank: 0, // 稍后排序后赋值
       author: name,
@@ -153,6 +160,7 @@ export class RankingAnalyzer {
       linesAdded: stat.linesAdded || 0,
       linesDeleted: stat.linesDeleted || 0,
       linesTotal: stat.linesTotal || 0,
+      weekendWorkDays,
     }
   }
 

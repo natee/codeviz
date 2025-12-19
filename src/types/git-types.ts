@@ -345,6 +345,7 @@ export interface RankingItem {
   linesAdded: number // 新增行数
   linesDeleted: number // 删除行数
   linesTotal: number // 总修改行数（新增+删除）
+  weekendWorkDays: number // 周末有提交的天数
 }
 
 /**
@@ -371,6 +372,7 @@ export interface RankingResult {
     }
     totalCommits: number
     filterThreshold: number // 过滤阈值（最少提交数）
+    topN: number // 终端显示时的限制数量
   }
 }
 

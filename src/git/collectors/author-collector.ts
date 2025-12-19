@@ -14,8 +14,8 @@ export class AuthorCollector extends BaseCollector {
   async getAuthorStats(options: GitLogOptions): Promise<Map<string, AuthorStat>> {
     const { path } = options
 
-    // 格式: "Author Name <email@example.com>|YYYY-MM-DD HH:mm:ss|ISO_TIMESTAMP|weekday"
-    const args = ['log', '--format=%an <%ae>|%cd|%ai|%w', '--date=format:%Y-%m-%d %H:%M:%S']
+    // 格式: "Author Name <email@example.com>|YYYY-MM-DD HH:mm:ss|ISO_TIMESTAMP"
+    const args = ['log', '--format=%an <%ae>|%cd|%ai', '--date=format:%Y-%m-%d %H:%M:%S']
 
     // 应用通用过滤器
     if (options.since) {
@@ -48,14 +48,17 @@ export class AuthorCollector extends BaseCollector {
 
     for (const line of lines) {
       const parts = line.split('|')
-      if (parts.length < 4) {
+      if (parts.length < 3) {
         continue
       }
 
       const author = parts[0]
       const dateStr = parts[1]
       const isoTimestamp = parts[2]
-      const weekday = parseInt(parts[3], 10) // 0=周日, 1=周一, ..., 6=周六
+      
+      // 从 ISO timestamp 中解析星期几 (0=周日, 1=周一, ..., 6=周六)
+      const date = new Date(isoTimestamp)
+      const weekday = date.getDay() // 0=周日, 1=周一, ..., 6=周六
 
       // 检查作者排除过滤
       if (this.shouldIgnoreAuthor(author, options.ignoreAuthor)) {
@@ -198,8 +201,8 @@ export class AuthorCollector extends BaseCollector {
   async getAuthorCommits(options: GitLogOptions, author: string): Promise<Array<{ date: string; hours: number; weekday: number }>> {
     const { path } = options
 
-    // 格式: "Author Name <email@example.com>|YYYY-MM-DD HH:mm:ss|ISO_TIMESTAMP|weekday"
-    const args = ['log', '--format=%an <%ae>|%cd|%ai|%w', '--date=format:%Y-%m-%d %H:%M:%S']
+    // 格式: "Author Name <email@example.com>|YYYY-MM-DD HH:mm:ss|ISO_TIMESTAMP"
+    const args = ['log', '--format=%an <%ae>|%cd|%ai', '--date=format:%Y-%m-%d %H:%M:%S']
 
     // 应用通用过滤器
     if (options.since) {
@@ -225,14 +228,17 @@ export class AuthorCollector extends BaseCollector {
 
     for (const line of lines) {
       const parts = line.split('|')
-      if (parts.length < 4) {
+      if (parts.length < 3) {
         continue
       }
 
       const lineAuthor = parts[0]
       const dateStr = parts[1]
       const isoTimestamp = parts[2]
-      const weekday = parseInt(parts[3], 10)
+      
+      // 从 ISO timestamp 中解析星期几 (0=周日, 1=周一, ..., 6=周六)
+      const date = new Date(isoTimestamp)
+      const weekday = date.getDay()
 
       // 只收集指定作者的提交
       if (lineAuthor !== author) {

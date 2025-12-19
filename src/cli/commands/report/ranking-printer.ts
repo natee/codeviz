@@ -13,10 +13,12 @@ export class RankingPrinter {
   print(result: RankingResult): void {
     this.printHeader()
     
+    const topN = result.metadata.topN
+    
     // 打印代码量排行榜（默认）
     console.log(chalk.hex('#10b981').bold('📊 代码量排行榜'))
     console.log()
-    this.printRankingTable(result.byLines)
+    this.printRankingTable(result.byLines.slice(0, topN))
     
     // 打印提交数排行榜
     console.log()
@@ -24,7 +26,7 @@ export class RankingPrinter {
     console.log()
     console.log(chalk.hex('#3b82f6').bold('📈 提交数排行榜'))
     console.log()
-    this.printRankingTable(result.byCommits)
+    this.printRankingTable(result.byCommits.slice(0, topN))
     
     // 打印996指数排行榜
     console.log()
@@ -32,7 +34,7 @@ export class RankingPrinter {
     console.log()
     console.log(chalk.hex('#ef4444').bold('🔥 996指数排行榜'))
     console.log()
-    this.printRankingTable(result.byIndex996)
+    this.printRankingTable(result.byIndex996.slice(0, topN))
     
     console.log()
     console.log('═'.repeat(80))

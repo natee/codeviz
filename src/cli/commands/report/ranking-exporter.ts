@@ -216,7 +216,7 @@ function buildHtmlReport(result: RankingResult): string {
               <div style="font-weight: 700; color: ${indexColor}; font-size: 18px;">${item.index996.toFixed(2)}</div>
             </td>
             <td style="text-align: center;">${item.overtimeRate.toFixed(1)}%</td>
-            <td style="text-align: center;">${item.weekendRatio.toFixed(1)}%</td>
+            <td style="text-align: center;">${item.weekendWorkDays} 天</td>
             <td style="text-align: right;">
               <div style="font-weight: 600; color: #10b981;">+${item.linesAdded.toLocaleString()}</div>
               <div style="font-weight: 600; color: #dc2626;">-${item.linesDeleted.toLocaleString()}</div>
@@ -305,11 +305,18 @@ function buildHtmlReport(result: RankingResult): string {
       border-radius: 20px;
       padding: 32px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-      overflow-x: auto;
       margin-bottom: 50px;
+      overflow: hidden;
     }
     .ranking-table-container:not(:first-of-type) {
       margin-top: 50px;
+    }
+    .table-wrapper {
+      max-height: 600px;
+      overflow-y: auto;
+      overflow-x: auto;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
     }
     .ranking-table-container h2 {
       font-size: 24px;
@@ -323,6 +330,12 @@ function buildHtmlReport(result: RankingResult): string {
     table {
       width: 100%;
       border-collapse: collapse;
+    }
+    thead {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #f9fafb;
     }
     th {
       background: #f9fafb;
@@ -339,7 +352,7 @@ function buildHtmlReport(result: RankingResult): string {
       padding: 16px;
       border-bottom: 1px solid #f3f4f6;
     }
-    tr:hover {
+    tbody tr:hover {
       background: #f9fafb;
     }
     .footer {
@@ -392,15 +405,16 @@ function buildHtmlReport(result: RankingResult): string {
 
     <div class="ranking-table-container">
       <h2 style="color: #10b981;">📊 代码量排行榜</h2>
-      <table>
-        <thead>
+      <div class="table-wrapper">
+        <table>
+          <thead>
           <tr>
             <th style="text-align: center;">排名</th>
             <th>作者</th>
             <th style="text-align: center;">提交数</th>
             <th style="text-align: center;">996指数</th>
             <th style="text-align: center;">加班率</th>
-            <th style="text-align: center;">周末提交</th>
+            <th style="text-align: center;">周末加班</th>
             <th style="text-align: right;">代码行数</th>
             <th style="text-align: center;">工作强度</th>
           </tr>
@@ -408,20 +422,22 @@ function buildHtmlReport(result: RankingResult): string {
         <tbody>
           ${tableRowsByLines}
         </tbody>
-      </table>
+        </table>
+      </div>
     </div>
 
     <div class="ranking-table-container">
       <h2 style="color: #3b82f6;">📈 提交数排行榜</h2>
-      <table>
-        <thead>
+      <div class="table-wrapper">
+        <table>
+          <thead>
           <tr>
             <th style="text-align: center;">排名</th>
             <th>作者</th>
             <th style="text-align: center;">提交数</th>
             <th style="text-align: center;">996指数</th>
             <th style="text-align: center;">加班率</th>
-            <th style="text-align: center;">周末提交</th>
+            <th style="text-align: center;">周末加班</th>
             <th style="text-align: right;">代码行数</th>
             <th style="text-align: center;">工作强度</th>
           </tr>
@@ -429,20 +445,22 @@ function buildHtmlReport(result: RankingResult): string {
         <tbody>
           ${tableRowsByCommits}
         </tbody>
-      </table>
+        </table>
+      </div>
     </div>
 
     <div class="ranking-table-container">
       <h2 style="color: #ef4444;">🔥 996指数排行榜</h2>
-      <table>
-        <thead>
+      <div class="table-wrapper">
+        <table>
+          <thead>
           <tr>
             <th style="text-align: center;">排名</th>
             <th>作者</th>
             <th style="text-align: center;">提交数</th>
             <th style="text-align: center;">996指数</th>
             <th style="text-align: center;">加班率</th>
-            <th style="text-align: center;">周末提交</th>
+            <th style="text-align: center;">周末加班</th>
             <th style="text-align: right;">代码行数</th>
             <th style="text-align: center;">工作强度</th>
           </tr>
@@ -450,7 +468,8 @@ function buildHtmlReport(result: RankingResult): string {
         <tbody>
           ${tableRowsByIndex996}
         </tbody>
-      </table>
+        </table>
+      </div>
     </div>
 
     <div class="footer">
