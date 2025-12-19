@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import chalk from 'chalk'
+import openBrowser from 'open-web-browser'
 import { ParsedGitData, Result996, GitLogData } from '../../../types/git-types'
 import { AnalyzeOptions } from '../../index'
 import { formatStartClock, formatEndClock } from '../../../utils/formatter'
@@ -50,21 +51,31 @@ export async function exportReport(formatInput: string | undefined, payload: Exp
   const context = buildReportContext(payload)
 
   try {
+    let reportContent: string | Buffer
+
     if (format === 'txt') {
-      await fs.promises.writeFile(outputPath, buildTextReport(context), 'utf8')
+      reportContent = buildTextReport(context)
+      await fs.promises.writeFile(outputPath, reportContent, 'utf8')
     } else if (format === 'md') {
-      await fs.promises.writeFile(outputPath, buildMarkdownReport(context), 'utf8')
+      reportContent = buildMarkdownReport(context)
+      await fs.promises.writeFile(outputPath, reportContent, 'utf8')
     } else if (format === 'html') {
-      await fs.promises.writeFile(outputPath, buildHtmlReport(context), 'utf8')
+      reportContent = buildHtmlReport(context)
+      await fs.promises.writeFile(outputPath, reportContent, 'utf8')
     } else if (format === 'svg') {
-      await fs.promises.writeFile(outputPath, buildSvgReport(context), 'utf8')
+      reportContent = buildSvgReport(context)
+      await fs.promises.writeFile(outputPath, reportContent, 'utf8')
     } else if (format === 'png') {
       const svg = buildSvgReport(context)
       const buffer = await renderPng(svg)
+      reportContent = buffer
       await fs.promises.writeFile(outputPath, buffer)
     }
 
     console.log(chalk.green('💾 报告已生成:'), outputPath)
+
+    // 自动预览
+    await previewReport(format, outputPath, context)
   } catch (error) {
     console.error(chalk.red('❌ 报告导出失败:'), (error as Error).message)
   }
@@ -722,4 +733,178 @@ function truncate(input: string, maxLength: number): string {
     return input
   }
   return `${input.slice(0, maxLength - 1)}…`
+}
+
+/** 本地预览报告 */
+async function previewReport(format: ReportFormat, outputPath: string, context: ReportContext): Promise<void> {
+  try {
+    if (format === 'txt') {
+      // TXT 格式直接在终端显示
+      console.log()
+      console.log(chalk.cyan('📄 报告内容预览:'))
+      console.log(chalk.gray('─'.repeat(60)))
+      const content = await fs.promises.readFile(outputPath, 'utf8')
+      console.log(content)
+      console.log(chalk.gray('─'.repeat(60)))
+    } else if (format === 'md') {
+      // Markdown 转换为临时 HTML 并在浏览器中打开
+      const tempHtmlPath = outputPath.replace(/\.md$/, '.temp.html')
+      const mdContent = await fs.promises.readFile(outputPath, 'utf8')
+      const htmlContent = buildMarkdownPreviewHtml(mdContent)
+      await fs.promises.writeFile(tempHtmlPath, htmlContent, 'utf8')
+      
+      console.log(chalk.green('🌐 正在浏览器中打开预览...'))
+      await openBrowser(`file://${tempHtmlPath}`)
+      
+      // 延迟删除临时文件，给浏览器足够时间加载
+      setTimeout(() => {
+        fs.promises.unlink(tempHtmlPath).catch(() => {})
+      }, 3000)
+    } else if (format === 'html' || format === 'svg' || format === 'png') {
+      // HTML/SVG/PNG 直接在浏览器中打开
+      console.log(chalk.green('🌐 正在浏览器中打开预览...'))
+      await openBrowser(`file://${outputPath}`)
+    }
+  } catch (error) {
+    console.warn(chalk.yellow('⚠️  自动预览失败，请手动打开文件:'), outputPath)
+    if (error instanceof Error) {
+      console.warn(chalk.gray(`   错误: ${error.message}`))
+    }
+  }
+}
+
+/** 将 Markdown 内容包装成可预览的 HTML */
+function buildMarkdownPreviewHtml(mdContent: string): string {
+  // 简单的 Markdown 转 HTML（仅处理基本语法）
+  let html = mdContent
+    // 标题
+    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+    // 粗体
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    // 列表
+    .replace(/^\- (.*$)/gim, '<li>$1</li>')
+    .replace(/^\d+\. (.*$)/gim, '<li>$1</li>')
+    // 引用
+    .replace(/^> (.*$)/gim, '<blockquote>$1</blockquote>')
+    // 水平线
+    .replace(/^---$/gim, '<hr>')
+    // 表格（简化处理）
+    .replace(/\|(.+)\|/g, (match, content) => {
+      const cells = content.split('|').map((cell: string) => cell.trim())
+      return '<tr>' + cells.map((cell: string) => `<td>${cell}</td>`).join('') + '</tr>'
+    })
+    // 段落
+    .split('\n\n')
+    .map(para => para.trim() ? (para.startsWith('<') ? para : `<p>${para}</p>`) : '')
+    .join('\n')
+
+  return `<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CODE996 分析报告</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #1f2937;
+      padding: 40px 20px;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      padding: 50px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+    h1 {
+      font-size: 36px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 24px;
+    }
+    h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-top: 32px;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e5e7eb;
+    }
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #374151;
+      margin-top: 24px;
+      margin-bottom: 12px;
+    }
+    p {
+      margin-bottom: 12px;
+      color: #4b5563;
+    }
+    blockquote {
+      border-left: 4px solid #667eea;
+      padding-left: 16px;
+      margin: 16px 0;
+      color: #6b7280;
+      background: #f9fafb;
+      padding: 12px 16px;
+      border-radius: 4px;
+    }
+    strong {
+      color: #111827;
+      font-weight: 600;
+    }
+    hr {
+      border: none;
+      border-top: 2px solid #e5e7eb;
+      margin: 24px 0;
+    }
+    ul, ol {
+      margin: 12px 0 12px 24px;
+    }
+    li {
+      margin-bottom: 8px;
+      color: #4b5563;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    th {
+      background: #f9fafb;
+      font-weight: 600;
+      color: #374151;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    ${html}
+  </div>
+</body>
+</html>`
 }

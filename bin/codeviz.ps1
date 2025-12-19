@@ -60,17 +60,11 @@ if ($PSVersionTable.PSVersion.Major -lt 7) {
 
         # url
         $GithubUrl = "https://natee.github.io/codeviz/#/result?time=$result"
-        $VercelUrl = "https://codeviz-swart.vercel.app/#/result?time=$result"
-
 
         Write-Host "复制以下 URL 以查看可视化分析结果："
-        Write-Host $VercelUrl
-        Write-Host ""
-        Write-Host "也可以访问以下镜像站点链接："
-        Write-Host "GitHub Pages:"
-        Write-Host "$GitHubUrl"
+        Write-Host $GithubUrl
         Write-Host ""
 
-        Start-Process $VercelUrl
+        Start-Process $GithubUrl
     }
 }

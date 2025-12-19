@@ -57,7 +57,6 @@ export class CLIManager {
       .option('--skip-user-analysis', '跳过团队工作模式分析')
       .option('--max-users <number>', '最大分析用户数（默认30）', '30')
       .option('-f, --format <format>', '导出报告格式 (txt, md, html, svg, png)')
-      .option('-o, --open', '在浏览器中打开可视化分析链接')
       .action(async (paths: string[], options: AnalyzeOptions, command: Command) => {
         const mergedOptions = this.mergeGlobalOptions(options)
 
@@ -372,7 +371,6 @@ ${chalk.bold('分析选项:')}
   --ignore-author <regex> 排除匹配的作者 (例如: bot|jenkins)
   --ignore-msg <regex>    排除匹配的提交消息 (例如: merge|lint)
   -f, --format <format>   导出报告格式 (txt, md, html, svg, png)
-  -o, --open              在浏览器中打开可视化分析链接
 
 ${chalk.bold('默认策略:')}
   自动以最后一次提交为基准，回溯365天进行分析
@@ -397,11 +395,10 @@ ${chalk.bold('示例:')}
   codeviz --ignore-msg "merge|lint|format"  # 排除多个关键词
 
   ${chalk.gray('# 导出报告')}
-  codeviz -f html            # 导出为精美的 HTML 报告
-  codeviz -f md              # 导出为 Markdown 格式
-  codeviz -f png             # 导出为 PNG 图片
-  codeviz --open             # 在浏览器中打开可视化分析
-  codeviz -f html -o         # 导出 HTML 并在浏览器打开
+  codeviz -f html            # 导出为精美的 HTML 报告（自动在浏览器预览）
+  codeviz -f md              # 导出为 Markdown 格式（自动在浏览器预览）
+  codeviz -f png             # 导出为 PNG 图片（自动在浏览器预览）
+  codeviz -f txt             # 导出为 TXT 文本（在终端显示）
 
 ${chalk.bold('正则表达式语法说明:')}
   - 使用 | 分隔多个模式 (例如: bot|jenkins)
