@@ -26,3 +26,10 @@ logs
 .env.*
 !.env.example
 
+# Generated reports
+report.txt
+report.md
+report.html
+report.svg
+report.png
+

@@ -262,6 +262,8 @@ export interface AnalyzeOptions {
   skipUserAnalysis?: boolean // 是否跳过团队工作模式分析
   maxUsers?: number // 最大分析用户数（默认30）
   cn?: boolean // 强制开启中国节假日调休模式
+  format?: 'txt' | 'md' | 'html' | 'svg' | 'png' // 导出报告格式 (txt, md, html, svg, png)
+  open?: boolean // 在浏览器中打开可视化分析链接
   // 卷王排行特有选项
   author?: string // 分析特定作者
   excludeAuthors?: string // 排除作者（逗号分隔）

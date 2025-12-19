@@ -122,7 +122,7 @@ result=$time_start"_"$time_end"&week="$by_day_result"&hour="$by_hour_result
 
 # url
 github_url="https://natee.github.io/codeviz/#/result?time=$result"
-vercel_url="https://codeviz.vercel.app/#/result?time=$result"
+vercel_url="https://codeviz-swart.vercel.app/#/result?time=$result"
 
 echo
 echo -e "${NC}复制以下url以查看可视化分析结果:"

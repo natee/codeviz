@@ -56,6 +56,8 @@ export class CLIManager {
       .option('--cn', '强制开启中国节假日调休模式（自动检测 +0800 时区）')
       .option('--skip-user-analysis', '跳过团队工作模式分析')
       .option('--max-users <number>', '最大分析用户数（默认30）', '30')
+      .option('-f, --format <format>', '导出报告格式 (txt, md, html, svg, png)')
+      .option('-o, --open', '在浏览器中打开可视化分析链接')
       .action(async (paths: string[], options: AnalyzeOptions, command: Command) => {
         const mergedOptions = this.mergeGlobalOptions(options)
 
@@ -173,7 +175,7 @@ export class CLIManager {
   /** 注册卷王排行命令 */
   private setupRankingAction(): void {
     this.program
-      .command('ranking1')
+      .command('ranking')
       .description('卷王排行 - 分析团队成员的996指数并排序')
       .argument('[path]', 'Git 仓库路径（默认当前目录）')
       .option('-s, --since <date>', '开始日期 (YYYY-MM-DD)')
@@ -369,6 +371,8 @@ ${chalk.bold('分析选项:')}
   --half-hour             以半小时粒度展示时间分布（默认按小时展示）
   --ignore-author <regex> 排除匹配的作者 (例如: bot|jenkins)
   --ignore-msg <regex>    排除匹配的提交消息 (例如: merge|lint)
+  -f, --format <format>   导出报告格式 (txt, md, html, svg, png)
+  -o, --open              在浏览器中打开可视化分析链接
 
 ${chalk.bold('默认策略:')}
   自动以最后一次提交为基准，回溯365天进行分析
@@ -391,6 +395,13 @@ ${chalk.bold('示例:')}
   codeviz --ignore-author "bot|jenkins|github-actions"  # 排除多个作者（使用 | 分隔）
   codeviz --ignore-msg "^Merge" # 排除所有以 "Merge" 开头的提交消息
   codeviz --ignore-msg "merge|lint|format"  # 排除多个关键词
+
+  ${chalk.gray('# 导出报告')}
+  codeviz -f html            # 导出为精美的 HTML 报告
+  codeviz -f md              # 导出为 Markdown 格式
+  codeviz -f png             # 导出为 PNG 图片
+  codeviz --open             # 在浏览器中打开可视化分析
+  codeviz -f html -o         # 导出 HTML 并在浏览器打开
 
 ${chalk.bold('正则表达式语法说明:')}
   - 使用 | 分隔多个模式 (例如: bot|jenkins)

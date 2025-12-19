@@ -342,11 +342,11 @@ describe('CLIManager', () => {
       vi.mocked(execSync).mockReturnValue(Buffer.from('/test/repo'))
     })
 
-    // Note: The ranking command is registered as 'ranking1' in the CLI
+    // Note: The ranking command is registered as 'ranking' in the CLI
     it('should execute ranking command with default options', async () => {
       const { RankingExecutor } = await import('../cli/commands/ranking')
       
-      await cli.parseAsync(['node', 'codeviz', 'ranking1'])
+      await cli.parseAsync(['node', 'codeviz', 'ranking'])
 
       expect(RankingExecutor.execute).toHaveBeenCalled()
     })
@@ -354,7 +354,7 @@ describe('CLIManager', () => {
     it('should execute ranking with custom path', async () => {
       const { RankingExecutor } = await import('../cli/commands/ranking')
       
-      await cli.parseAsync(['node', 'codeviz', 'ranking1', '/test/path'])
+      await cli.parseAsync(['node', 'codeviz', 'ranking', '/test/path'])
 
       expect(RankingExecutor.execute).toHaveBeenCalledWith(
         '/test/path',
@@ -365,7 +365,7 @@ describe('CLIManager', () => {
     it('should execute ranking with --year option', async () => {
       const { RankingExecutor } = await import('../cli/commands/ranking')
       
-      await cli.parseAsync(['node', 'codeviz', 'ranking1', '-y', '2025'])
+      await cli.parseAsync(['node', 'codeviz', 'ranking', '-y', '2025'])
 
       expect(RankingExecutor.execute).toHaveBeenCalledWith(
         expect.any(String),
@@ -376,7 +376,7 @@ describe('CLIManager', () => {
     it('should execute ranking with --all-time option', async () => {
       const { RankingExecutor } = await import('../cli/commands/ranking')
       
-      await cli.parseAsync(['node', 'codeviz', 'ranking1', '--all-time'])
+      await cli.parseAsync(['node', 'codeviz', 'ranking', '--all-time'])
 
       expect(RankingExecutor.execute).toHaveBeenCalledWith(
         expect.any(String),
@@ -387,7 +387,7 @@ describe('CLIManager', () => {
     it('should execute ranking with --hours option', async () => {
       const { RankingExecutor } = await import('../cli/commands/ranking')
       
-      await cli.parseAsync(['node', 'codeviz', 'ranking1', '--hours', '9-18'])
+      await cli.parseAsync(['node', 'codeviz', 'ranking', '--hours', '9-18'])
 
       expect(RankingExecutor.execute).toHaveBeenCalledWith(
         expect.any(String),
@@ -398,7 +398,7 @@ describe('CLIManager', () => {
     it('should execute ranking with --timezone option', async () => {
       const { RankingExecutor } = await import('../cli/commands/ranking')
       
-      await cli.parseAsync(['node', 'codeviz', 'ranking1', '--timezone', '+0800'])
+      await cli.parseAsync(['node', 'codeviz', 'ranking', '--timezone', '+0800'])
 
       expect(RankingExecutor.execute).toHaveBeenCalledWith(
         expect.any(String),

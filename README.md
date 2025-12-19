@@ -29,6 +29,8 @@ codeviz 通过分析 Git 提交时间戳，帮你：
 | **📦 多仓库对比** | 一键扫描分析多个仓库，自动生成对比报告 |
 | **🌍 跨时区检测** | 自动识别时区分布，支持时区过滤 |
 | **🇨🇳 节假日调休** | 内置国内节假日逻辑，精准剔除调休干扰 |
+| **📄 多格式导出** | 支持导出 TXT、MD、HTML、SVG、PNG 多种格式报告 |
+| **🌐 可视化链接** | 自动生成在线可视化链接，一键浏览器打开 |
 | **🔒 隐私安全** | 纯本地运行，数据不上云
 
 ## 预览
@@ -164,6 +166,8 @@ codeviz /workspace         # 扫描子目录
 | `--year <year>` | `-y` | 年份或范围：`2025` 或 `2023-2025` |
 | `--hours <range>` | `-H` | **推荐**：工作时间，如 `9-18` 或 `9.5-18.5` |
 | `--half-hour` | - | 半小时粒度（默认小时） |
+| `--format <format>` | `-f` | 导出报告格式：`txt`、`md`、`html`、`svg`、`png` |
+| `--open` | `-o` | 在浏览器中打开可视化分析链接 |
 | `--timezone <offset>` | - | 时区过滤，如 `+0800` |
 | `--cn` | - | 强制中国节假日模式 |
 | `--self` | - | 只分析当前用户 |
@@ -190,6 +194,13 @@ codeviz -y 2025 --timezone "+0800"
 
 # 过滤噪音
 codeviz -y 2025 --ignore-author "bot|jenkins" --ignore-msg "^Merge"
+
+# 导出报告
+codeviz -f html              # 导出为精美的 HTML 报告
+codeviz -f md                # 导出为 Markdown 格式
+codeviz -f png               # 导出为 PNG 图片
+codeviz --open               # 在浏览器中打开可视化分析
+codeviz -f html -o           # 导出 HTML 并在浏览器打开
 ```
 
 ### 完整参数表
@@ -213,6 +224,10 @@ codeviz -y 2025 --ignore-author "bot|jenkins" --ignore-msg "^Merge"
 #### 过滤选项
 - `--ignore-author <regex>`: 排除作者（`bot|jenkins`）
 - `--ignore-msg <regex>`: 排除提交信息（`^Merge`）
+
+#### 报告导出
+- `--format <format>` / `-f`: 导出报告格式（`txt`、`md`、`html`、`svg`、`png`）
+- `--open` / `-o`: 在浏览器中打开可视化分析链接
 
 #### 卷王排行专用
 - `--topN <number>`: 显示前N名
