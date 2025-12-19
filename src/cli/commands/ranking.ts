@@ -1,6 +1,7 @@
 import { AnalyzeOptions } from '../../types/git-types'
 import { RankingAnalyzer } from '../../core/ranking-analyzer'
 import { RankingPrinter } from './report/ranking-printer'
+import { exportRankingReport } from './report/ranking-exporter'
 import chalk from 'chalk'
 import { printGlobalNotices } from '../common/notices'
 
@@ -34,20 +35,28 @@ export class RankingExecutor {
       const analyzer = new RankingAnalyzer()
       const result = await analyzer.analyze(fullOptions)
 
-      // 打印结果
-      const printer = new RankingPrinter()
-      printer.print(result)
+      // 根据format参数决定输出方式
+      const format = (options.format || 'txt') as 'txt' | 'html'
+      
+      if (format === 'html') {
+        // HTML 格式：导出并在浏览器中打开
+        await exportRankingReport('html', result)
+      } else {
+        // TXT 格式：在终端打印
+        const printer = new RankingPrinter()
+        printer.print(result)
 
-      // 如果指定了特定作者，打印详细信息
-      if (options.author) {
-        const targetItem = result.items.find(item =>
-          item.author.includes(options.author!) || item.email.includes(options.author!)
-        )
+        // 如果指定了特定作者，打印详细信息
+        if (options.author) {
+          const targetItem = result.items.find(item =>
+            item.author.includes(options.author!) || item.email.includes(options.author!)
+          )
 
-        if (targetItem) {
-          printer.printAuthorDetail(targetItem)
-        } else {
-          console.log(chalk.yellow(`⚠️  未找到作者: ${options.author}`))
+          if (targetItem) {
+            printer.printAuthorDetail(targetItem)
+          } else {
+            console.log(chalk.yellow(`⚠️  未找到作者: ${options.author}`))
+          }
         }
       }
 

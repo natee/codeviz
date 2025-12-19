@@ -85,6 +85,9 @@ export class AuthorCollector extends BaseCollector {
           weekendCommits: 0,
           timeDistribution: new Array(24).fill(0),
           commitDates: [],
+          linesAdded: 0,
+          linesDeleted: 0,
+          linesTotal: 0,
         })
       }
 
@@ -112,7 +115,78 @@ export class AuthorCollector extends BaseCollector {
       stat.commitDates.push({ date: datePart, hours, weekday })
     }
 
+    // 获取代码行数统计
+    await this.collectCodeStats(options, authorStats)
+
     return authorStats
+  }
+
+  /**
+   * 收集所有作者的代码行数统计
+   * @param options Git日志选项
+   * @param authorStats 已有的作者统计数据
+   */
+  private async collectCodeStats(options: GitLogOptions, authorStats: Map<string, AuthorStat>): Promise<void> {
+    const { path } = options
+
+    // 使用 --numstat 获取每个提交的代码行数变化
+    // 格式: "added\tdeleted\tfilename"
+    const args = ['log', '--numstat', '--format=%an <%ae>']
+
+    // 应用通用过滤器
+    if (options.since) {
+      args.push(`--since=${options.since}`)
+    }
+    if (options.until) {
+      args.push(`--until=${options.until}`)
+    }
+    args.push('--no-merges')
+
+    // 如果指定了作者模式（--self），需要特殊处理
+    if (options.authorPattern) {
+      args.push('--regexp-ignore-case')
+      args.push('--extended-regexp')
+      args.push(`--author=${options.authorPattern}`)
+    }
+
+    // 排除特定提交消息
+    if (options.ignoreMsg) {
+      args.push('--regexp-ignore-case')
+      args.push('--extended-regexp')
+      args.push(`--grep=${options.ignoreMsg}`)
+      args.push('--invert-grep')
+    }
+
+    const output = await this.execGitCommand(args, path)
+    const lines = output.split('\n')
+
+    let currentAuthor: string | null = null
+
+    for (const line of lines) {
+      if (!line.trim()) {
+        continue
+      }
+
+      // 作者行（不包含制表符）
+      if (!line.includes('\t')) {
+        currentAuthor = line.trim()
+        continue
+      }
+
+      // 统计行（包含制表符）
+      if (currentAuthor && authorStats.has(currentAuthor)) {
+        const parts = line.split('\t')
+        if (parts.length >= 2) {
+          const added = parts[0] === '-' ? 0 : parseInt(parts[0], 10) || 0
+          const deleted = parts[1] === '-' ? 0 : parseInt(parts[1], 10) || 0
+
+          const stat = authorStats.get(currentAuthor)!
+          stat.linesAdded += added
+          stat.linesDeleted += deleted
+          stat.linesTotal += added + deleted
+        }
+      }
+    }
   }
 
   /**
@@ -197,4 +271,7 @@ interface AuthorStat {
   weekendCommits: number
   timeDistribution: number[]
   commitDates: Array<{ date: string; hours: number; weekday: number }>
+  linesAdded: number // 新增代码行数
+  linesDeleted: number // 删除代码行数
+  linesTotal: number // 总修改行数
 }

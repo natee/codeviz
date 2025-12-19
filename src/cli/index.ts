@@ -188,6 +188,7 @@ export class CLIManager {
       .option('--topN <number>', '显示前N名（默认10）', parseInt)
       .option('--min-commits <number>', '最少提交数阈值（默认5）', parseInt)
       .option('--timezone <offset>', '指定时区进行分析 (例如: +0800, -0700)')
+      .option('--sort-by <type>', '排序方式: index996(996指数), commits(提交数), lines(代码行数)', 'index996')
       .action(async (path: string | undefined, cmdOptions: any, command: Command) => {
         // 合并全局选项
         const globalOpts = command.parent?.opts() || {}
@@ -201,6 +202,8 @@ export class CLIManager {
           year: cmdOptions.year ?? globalOpts.year,
           hours: cmdOptions.hours ?? globalOpts.hours,
           timezone: cmdOptions.timezone ?? globalOpts.timezone,
+          sortBy: cmdOptions.sortBy || 'index996',
+          format: cmdOptions.format || globalOpts.format || 'txt',
         }
 
         // 处理作者排除（逗号分隔转为管道分隔）

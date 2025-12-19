@@ -68,8 +68,9 @@ export class RankingAnalyzer {
       rankingItems.push(item)
     }
 
-    // 5. 排序（按996指数降序）
-    rankingItems.sort((a, b) => b.index996 - a.index996)
+    // 5. 排序（根据sortBy参数）
+    const sortBy = options.sortBy || 'index996'
+    this.sortRankingItems(rankingItems, sortBy)
 
     // 6. 添加排名
     rankingItems.forEach((item, index) => {
@@ -139,6 +140,29 @@ export class RankingAnalyzer {
       weekendOvertime: weekendCommits,
       workHours: workHours,
       intensityLevel,
+      linesAdded: stat.linesAdded || 0,
+      linesDeleted: stat.linesDeleted || 0,
+      linesTotal: stat.linesTotal || 0,
+    }
+  }
+
+  /**
+   * 排序排行榜
+   * @param items 排行榜项目列表
+   * @param sortBy 排序方式
+   */
+  private sortRankingItems(items: RankingItem[], sortBy: 'index996' | 'commits' | 'lines'): void {
+    switch (sortBy) {
+      case 'commits':
+        items.sort((a, b) => b.totalCommits - a.totalCommits)
+        break
+      case 'lines':
+        items.sort((a, b) => b.linesTotal - a.linesTotal)
+        break
+      case 'index996':
+      default:
+        items.sort((a, b) => b.index996 - a.index996)
+        break
     }
   }
 
@@ -182,6 +206,11 @@ export class RankingAnalyzer {
         // 合并提交日期
         existing.commitDates.push(...stat.commitDates)
 
+        // 合并代码行数
+        existing.linesAdded += stat.linesAdded || 0
+        existing.linesDeleted += stat.linesDeleted || 0
+        existing.linesTotal += stat.linesTotal || 0
+
         // 更新邮箱（保留多个邮箱信息）
         if (!existing.emails) {
           existing.emails = []
@@ -192,7 +221,12 @@ export class RankingAnalyzer {
         }
       } else {
         // 新增作者
-        const newStat = { ...stat }
+        const newStat = { 
+          ...stat,
+          linesAdded: stat.linesAdded || 0,
+          linesDeleted: stat.linesDeleted || 0,
+          linesTotal: stat.linesTotal || 0,
+        }
         const email = this.parseAuthor(author).email
         newStat.emails = [email]
         merged.set(author, newStat)

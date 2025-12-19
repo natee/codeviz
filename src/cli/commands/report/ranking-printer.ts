@@ -45,8 +45,9 @@ export class RankingPrinter {
         chalk.cyan('996指数'),
         chalk.cyan('加班率'),
         chalk.cyan('周末提交'),
+        chalk.cyan('代码行数'),
       ],
-      colWidths: [8, 15, 25, 10, 12, 12, 12],
+      colWidths: [8, 15, 25, 10, 12, 12, 12, 15],
       style: {
         head: ['cyan'],
         border: ['gray'],
@@ -58,6 +59,9 @@ export class RankingPrinter {
       const indexColor = this.getIndexColor(item.index996)
       const intensityBadge = this.getIntensityBadge(item.intensityLevel)
 
+      // 格式化代码行数显示
+      const linesText = `${chalk.green('+' + item.linesAdded.toLocaleString())} ${chalk.red('-' + item.linesDeleted.toLocaleString())}\n总:${item.linesTotal.toLocaleString()}`
+
       table.push([
         `${rankEmoji}${item.rank}`,
         `${item.author} ${intensityBadge}`,
@@ -66,6 +70,7 @@ export class RankingPrinter {
         indexColor(item.index996.toFixed(2)),
         `${item.overtimeRate.toFixed(1)}%`,
         `${item.weekendRatio.toFixed(1)}%`,
+        linesText,
       ])
     })
 
@@ -128,6 +133,7 @@ export class RankingPrinter {
       ['工作时间提交', item.workHours.toString()],
       ['加班时间提交', item.workdayOvertime.toString()],
       ['周末提交', `${item.weekendOvertime} (${item.weekendRatio.toFixed(1)}%)`],
+      ['代码行数', `+${item.linesAdded.toLocaleString()} -${item.linesDeleted.toLocaleString()} (总:${item.linesTotal.toLocaleString()})`],
       ['工作强度', this.getIntensityText(item.intensityLevel)],
     ]
 
@@ -237,6 +243,8 @@ ${chalk.cyan('常用选项:')}
   --merge-authors             合并同名不同邮箱的作者
   --topN <number>             显示前N名 (默认10)
   --min-commits <number>      最少提交数阈值 (默认5)
+  --sort-by <type>            排序方式 (index996|commits|lines, 默认index996)
+  -f, --format <type>         输出格式 (txt|html, 默认txt)
 
 ${chalk.cyan('示例:')}
   codeviz ranking                          # 分析最近一年
@@ -246,6 +254,9 @@ ${chalk.cyan('示例:')}
   codeviz ranking --merge-authors          # 合并同名作者
   codeviz ranking --topN 5                 # 显示前5名
   codeviz ranking --author "张三"          # 分析特定作者
+  codeviz ranking --sort-by commits        # 按提交数排序
+  codeviz ranking --sort-by lines          # 按代码行数排序
+  codeviz ranking -f html                  # 生成HTML报告并在浏览器预览
     `)
   }
 }
