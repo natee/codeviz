@@ -68,23 +68,23 @@ export class RankingAnalyzer {
       rankingItems.push(item)
     }
 
-    // 5. 生成三种排行榜
+    // 5. 生成三种排行榜（深拷贝以保持独立的排名）
     const topN = options.topN || 10
 
     // 按代码量排序
-    const byLines = [...rankingItems]
+    const byLines = rankingItems.map(item => ({ ...item }))
     this.sortRankingItems(byLines, 'lines')
     this.assignRanks(byLines)
     const topByLines = byLines.slice(0, topN)
 
     // 按提交数排序
-    const byCommits = [...rankingItems]
+    const byCommits = rankingItems.map(item => ({ ...item }))
     this.sortRankingItems(byCommits, 'commits')
     this.assignRanks(byCommits)
     const topByCommits = byCommits.slice(0, topN)
 
     // 按996指数排序
-    const byIndex996 = [...rankingItems]
+    const byIndex996 = rankingItems.map(item => ({ ...item }))
     this.sortRankingItems(byIndex996, 'index996')
     this.assignRanks(byIndex996)
     const topByIndex996 = byIndex996.slice(0, topN)

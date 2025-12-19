@@ -49,7 +49,7 @@ function buildTextReport(result: RankingResult): string {
   const lines: string[] = []
   
   lines.push('=' .repeat(80))
-  lines.push('🏆 代码工作强度排行榜')
+  lines.push('🏆 真诚热爱度排行榜')
   lines.push('=' .repeat(80))
   lines.push('')
   
@@ -238,7 +238,7 @@ function buildHtmlReport(result: RankingResult): string {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>代码工作强度排行榜</title>
+  <title>真诚热爱度排行榜</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -364,7 +364,7 @@ function buildHtmlReport(result: RankingResult): string {
 <body>
   <div class="container">
     <div class="header">
-      <h1>🏆 代码工作强度排行榜</h1>
+      <h1>🏆 真诚热爱度排行榜</h1>
       <div class="meta">
         <span>📅 生成时间：${new Date().toLocaleString('zh-CN')}</span>
         <span>⏰ 分析时段：${result.metadata.timeRange.since} ~ ${result.metadata.timeRange.until}</span>
