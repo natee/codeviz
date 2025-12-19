@@ -5,7 +5,6 @@ import { GitLogData, ParsedGitData, TimeCount } from '../types/git-types'
  */
 export enum ProjectType {
   CORPORATE = 'corporate', // 公司项目/正常工作项目
-  OPEN_SOURCE = 'open_source', // 开源项目/业余项目
   UNCERTAIN = 'uncertain', // 不确定
 }
 
@@ -46,7 +45,7 @@ export interface ProjectClassificationResult {
 
 /**
  * 项目分类器
- * 通过多个维度判断项目是公司项目还是开源项目
+ * 通过多个维度分析项目工作模式
  */
 export class ProjectClassifier {
   /**
@@ -68,17 +67,10 @@ export class ProjectClassifier {
     // 维度4: 贡献者数量（强特征，可单独判定）
     const contributorsCount = rawData.contributors || 0
 
-    // 综合判断
-    const { projectType, confidence, reasoning } = this.makeDecision(
-      regularityResult,
-      weekendResult,
-      moonlightingResult,
-      contributorsCount
-    )
-
+    // 所有项目都视为企业项目
     return {
-      projectType,
-      confidence,
+      projectType: ProjectType.CORPORATE,
+      confidence: 100,
       dimensions: {
         workTimeRegularity: regularityResult,
         weekendActivity: weekendResult,
@@ -88,7 +80,7 @@ export class ProjectClassifier {
           description: this.getContributorsDescription(contributorsCount),
         },
       },
-      reasoning,
+      reasoning: '企业项目',
     }
   }
 
@@ -96,9 +88,9 @@ export class ProjectClassifier {
    * 获取贡献者数量的描述
    */
   private static getContributorsDescription(count: number): string {
-    if (count >= 100) return `${count} 人（大型开源项目）`
-    if (count >= 50) return `${count} 人（中型开源项目）`
-    if (count >= 20) return `${count} 人（小型开源项目）`
+    if (count >= 100) return `${count} 人（大型团队）`
+    if (count >= 50) return `${count} 人（中型团队）`
+    if (count >= 20) return `${count} 人（较大团队）`
     if (count >= 10) return `${count} 人（小团队）`
     return `${count} 人`
   }
@@ -143,13 +135,13 @@ export class ProjectClassifier {
     // 生成描述
     let description = ''
     if (score >= 75) {
-      description = '高规律性（典型的公司工作模式）'
+      description = '高规律性（典型的工作模式）'
     } else if (score >= 50) {
       description = '中等规律性'
     } else if (score >= 25) {
-      description = '低规律性（可能是开源项目）'
+      description = '低规律性'
     } else {
-      description = '无规律性（典型的开源项目）'
+      description = '无规律性'
     }
 
     return {
@@ -378,110 +370,6 @@ export class ProjectClassifier {
       eveningToMorningRatio,
       nightRatio,
       description,
-    }
-  }
-
-  /**
-   * 综合决策
-   */
-  private static makeDecision(
-    regularity: ProjectClassificationResult['dimensions']['workTimeRegularity'],
-    weekend: ProjectClassificationResult['dimensions']['weekendActivity'],
-    moonlighting: ProjectClassificationResult['dimensions']['moonlightingPattern'],
-    contributorsCount: number
-  ): {
-    projectType: ProjectType
-    confidence: number
-    reasoning: string
-  } {
-    const reasons: string[] = []
-
-    // ========== 强特征判断（单独满足即可判定为开源项目）==========
-
-    // 强特征1: 贡献者数量众多（>=50 人）
-    if (contributorsCount >= 50) {
-      return {
-        projectType: ProjectType.OPEN_SOURCE,
-        confidence: Math.min(95, 70 + Math.floor(contributorsCount / 10)),
-        reasoning: `贡献者数量众多 (${contributorsCount} 人)，典型的开源项目特征`,
-      }
-    }
-
-    // 强特征2: 工作时间规律性极低（<= 25 分）
-    if (regularity.score <= 25) {
-      return {
-        projectType: ProjectType.OPEN_SOURCE,
-        confidence: 90,
-        reasoning: `工作时间完全无规律 (${regularity.score}/100)，典型的开源项目特征`,
-      }
-    }
-
-    // ========== 组合判断（多个弱特征组合）==========
-
-    let ossScore = 0 // 开源项目得分
-
-    // 规律性得分分析
-    if (regularity.score < 30) {
-      ossScore += 60
-      reasons.push(`工作时间规律性极低 (${regularity.score}/100)`)
-    } else if (regularity.score < 50) {
-      ossScore += 40
-      reasons.push(`工作时间规律性低 (${regularity.score}/100)`)
-    } else if (regularity.score < 75) {
-      ossScore += 20
-      reasons.push(`工作时间规律性中等 (${regularity.score}/100)`)
-    }
-
-    // 贡献者数量（20-49人给予适度加分）
-    if (contributorsCount >= 20 && contributorsCount < 50) {
-      ossScore += 20
-      reasons.push(`贡献者较多 (${contributorsCount} 人)`)
-    } else if (contributorsCount >= 10 && contributorsCount < 20) {
-      ossScore += 10
-      reasons.push(`贡献者数量中等 (${contributorsCount} 人)`)
-    }
-
-    // 周末活跃度分析
-    if (weekend.ratio >= 0.30) {
-      ossScore += 30
-      reasons.push(`周末活跃度高 (${(weekend.ratio * 100).toFixed(1)}%)`)
-    } else if (weekend.ratio >= 0.20) {
-      ossScore += 20
-      reasons.push(`周末活跃度较高 (${(weekend.ratio * 100).toFixed(1)}%)`)
-    } else if (weekend.ratio >= 0.15) {
-      ossScore += 10
-      reasons.push(`周末活跃度中等 (${(weekend.ratio * 100).toFixed(1)}%)`)
-    }
-
-    // 月光族模式
-    if (moonlighting.isActive) {
-      ossScore += 20
-      reasons.push('晚上提交量超过白天')
-    }
-
-    // 决策逻辑
-    let projectType: ProjectType
-    let confidence: number
-    let reasoning: string
-
-    if (ossScore >= 60) {
-      projectType = ProjectType.OPEN_SOURCE
-      confidence = Math.min(95, 50 + ossScore / 2)
-      reasoning = `开源项目特征明显：${reasons.join('；')}`
-    } else if (ossScore >= 40) {
-      projectType = ProjectType.UNCERTAIN
-      confidence = 50
-      reasoning = `项目特征不明确：${reasons.join('；')}`
-    } else {
-      projectType = ProjectType.CORPORATE
-      confidence = Math.min(95, 80 - ossScore)
-      reasoning = '符合公司项目特征'
-    }
-
-    return {
-      projectType,
-      confidence: Math.round(confidence),
-      reasoning,
     }
   }
 }
