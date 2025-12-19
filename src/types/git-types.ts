@@ -270,7 +270,6 @@ export interface AnalyzeOptions {
   topN?: number // 显示前N名
   minCommits?: number // 最少提交数阈值
   path?: string // 目标路径（用于ranking命令）
-  sortBy?: 'index996' | 'commits' | 'lines' // 排序方式（默认index996）
 }
 
 /**
@@ -352,7 +351,9 @@ export interface RankingItem {
  * 卷王排行结果
  */
 export interface RankingResult {
-  items: RankingItem[] // 排行列表
+  byLines: RankingItem[] // 按代码量排行
+  byCommits: RankingItem[] // 按提交数排行
+  byIndex996: RankingItem[] // 按996指数排行
   summary: {
     totalAuthors: number // 总作者数
     analyzedAuthors: number // 分析的作者数
@@ -387,7 +388,6 @@ export interface RankingOptions {
   hours?: string // 工作时间范围
   topN?: number // 显示前N名（默认10）
   minCommits?: number // 最少提交数阈值（默认5）
-  sortBy?: 'index996' | 'commits' | 'lines' // 排序方式：996指数、提交数、代码行数（默认index996）
   format?: 'txt' | 'html' // 输出格式（默认txt）
 }
 

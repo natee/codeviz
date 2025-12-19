@@ -49,7 +49,7 @@ function buildTextReport(result: RankingResult): string {
   const lines: string[] = []
   
   lines.push('=' .repeat(80))
-  lines.push('🏆 CODE996 卷王排行榜')
+  lines.push('🏆 代码工作强度排行榜')
   lines.push('=' .repeat(80))
   lines.push('')
   
@@ -57,12 +57,11 @@ function buildTextReport(result: RankingResult): string {
   lines.push(`分析时段: ${result.metadata.timeRange.since} ~ ${result.metadata.timeRange.until}`)
   lines.push('')
   
+  // 打印代码量排行榜
   lines.push('─'.repeat(80))
-  lines.push('📊 排行榜')
+  lines.push('📊 代码量排行榜')
   lines.push('─'.repeat(80))
   lines.push('')
-  
-  // 表头
   lines.push(
     `${'排名'.padEnd(6)}` +
     `${'作者'.padEnd(15)}` +
@@ -72,9 +71,63 @@ function buildTextReport(result: RankingResult): string {
     `${'代码行数'.padEnd(12)}`
   )
   lines.push('─'.repeat(80))
+  result.byLines.forEach((item) => {
+    const rankEmoji = item.rank === 1 ? '🥇' : item.rank === 2 ? '🥈' : item.rank === 3 ? '🥉' : '  '
+    lines.push(
+      `${(rankEmoji + item.rank).padEnd(8)}` +
+      `${item.author.substring(0, 14).padEnd(15)}` +
+      `${item.email.substring(0, 28).padEnd(30)}` +
+      `${item.totalCommits.toString().padEnd(10)}` +
+      `${item.index996.toFixed(2).padEnd(10)}` +
+      `${item.linesTotal.toLocaleString().padEnd(12)}`
+    )
+  })
   
-  // 数据行
-  result.items.forEach((item) => {
+  lines.push('')
+  
+  // 打印提交数排行榜
+  lines.push('─'.repeat(80))
+  lines.push('📈 提交数排行榜')
+  lines.push('─'.repeat(80))
+  lines.push('')
+  lines.push(
+    `${'排名'.padEnd(6)}` +
+    `${'作者'.padEnd(15)}` +
+    `${'邮箱'.padEnd(30)}` +
+    `${'提交数'.padEnd(10)}` +
+    `${'996指数'.padEnd(10)}` +
+    `${'代码行数'.padEnd(12)}`
+  )
+  lines.push('─'.repeat(80))
+  result.byCommits.forEach((item) => {
+    const rankEmoji = item.rank === 1 ? '🥇' : item.rank === 2 ? '🥈' : item.rank === 3 ? '🥉' : '  '
+    lines.push(
+      `${(rankEmoji + item.rank).padEnd(8)}` +
+      `${item.author.substring(0, 14).padEnd(15)}` +
+      `${item.email.substring(0, 28).padEnd(30)}` +
+      `${item.totalCommits.toString().padEnd(10)}` +
+      `${item.index996.toFixed(2).padEnd(10)}` +
+      `${item.linesTotal.toLocaleString().padEnd(12)}`
+    )
+  })
+  
+  lines.push('')
+  
+  // 打印996指数排行榜
+  lines.push('─'.repeat(80))
+  lines.push('🔥 996指数排行榜')
+  lines.push('─'.repeat(80))
+  lines.push('')
+  lines.push(
+    `${'排名'.padEnd(6)}` +
+    `${'作者'.padEnd(15)}` +
+    `${'邮箱'.padEnd(30)}` +
+    `${'提交数'.padEnd(10)}` +
+    `${'996指数'.padEnd(10)}` +
+    `${'代码行数'.padEnd(12)}`
+  )
+  lines.push('─'.repeat(80))
+  result.byIndex996.forEach((item) => {
     const rankEmoji = item.rank === 1 ? '🥇' : item.rank === 2 ? '🥈' : item.rank === 3 ? '🥉' : '  '
     lines.push(
       `${(rankEmoji + item.rank).padEnd(8)}` +
@@ -144,42 +197,48 @@ function buildHtmlReport(result: RankingResult): string {
       .replace(/'/g, '&#039;')
   }
 
-  const tableRows = result.items
-    .map((item) => {
-      const rankEmoji = item.rank === 1 ? '🥇' : item.rank === 2 ? '🥈' : item.rank === 3 ? '🥉' : ''
-      const indexColor = getIndexColor(item.index996)
-      const intensityBadge = getIntensityBadge(item.intensityLevel)
+  const buildTableRows = (items: typeof result.byLines) => {
+    return items
+      .map((item) => {
+        const rankEmoji = item.rank === 1 ? '🥇' : item.rank === 2 ? '🥈' : item.rank === 3 ? '🥉' : ''
+        const indexColor = getIndexColor(item.index996)
+        const intensityBadge = getIntensityBadge(item.intensityLevel)
 
-      return `
-        <tr>
-          <td style="text-align: center; font-weight: 700;">${rankEmoji} ${item.rank}</td>
-          <td>
-            <div style="font-weight: 600; color: #1f2937;">${escapeHtml(item.author)}</div>
-            <div style="font-size: 12px; color: #9ca3af;">${escapeHtml(item.email)}</div>
-          </td>
-          <td style="text-align: center;">${item.totalCommits.toLocaleString()}</td>
-          <td style="text-align: center;">
-            <div style="font-weight: 700; color: ${indexColor}; font-size: 18px;">${item.index996.toFixed(2)}</div>
-          </td>
-          <td style="text-align: center;">${item.overtimeRate.toFixed(1)}%</td>
-          <td style="text-align: center;">${item.weekendRatio.toFixed(1)}%</td>
-          <td style="text-align: right;">
-            <div style="font-weight: 600; color: #10b981;">+${item.linesAdded.toLocaleString()}</div>
-            <div style="font-weight: 600; color: #dc2626;">-${item.linesDeleted.toLocaleString()}</div>
-            <div style="font-size: 12px; color: #6b7280;">总: ${item.linesTotal.toLocaleString()}</div>
-          </td>
-          <td style="text-align: center;">${intensityBadge}</td>
-        </tr>
-      `
-    })
-    .join('')
+        return `
+          <tr>
+            <td style="text-align: center; font-weight: 700;">${rankEmoji} ${item.rank}</td>
+            <td>
+              <div style="font-weight: 600; color: #1f2937;">${escapeHtml(item.author)}</div>
+              <div style="font-size: 12px; color: #9ca3af;">${escapeHtml(item.email)}</div>
+            </td>
+            <td style="text-align: center;">${item.totalCommits.toLocaleString()}</td>
+            <td style="text-align: center;">
+              <div style="font-weight: 700; color: ${indexColor}; font-size: 18px;">${item.index996.toFixed(2)}</div>
+            </td>
+            <td style="text-align: center;">${item.overtimeRate.toFixed(1)}%</td>
+            <td style="text-align: center;">${item.weekendRatio.toFixed(1)}%</td>
+            <td style="text-align: right;">
+              <div style="font-weight: 600; color: #10b981;">+${item.linesAdded.toLocaleString()}</div>
+              <div style="font-weight: 600; color: #dc2626;">-${item.linesDeleted.toLocaleString()}</div>
+              <div style="font-size: 12px; color: #6b7280;">总: ${item.linesTotal.toLocaleString()}</div>
+            </td>
+            <td style="text-align: center;">${intensityBadge}</td>
+          </tr>
+        `
+      })
+      .join('')
+  }
+
+  const tableRowsByLines = buildTableRows(result.byLines)
+  const tableRowsByCommits = buildTableRows(result.byCommits)
+  const tableRowsByIndex996 = buildTableRows(result.byIndex996)
 
   return `<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CODE996 卷王排行榜</title>
+  <title>代码工作强度排行榜</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -247,6 +306,10 @@ function buildHtmlReport(result: RankingResult): string {
       padding: 32px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
       overflow-x: auto;
+      margin-bottom: 50px;
+    }
+    .ranking-table-container:not(:first-of-type) {
+      margin-top: 50px;
     }
     .ranking-table-container h2 {
       font-size: 24px;
@@ -301,7 +364,7 @@ function buildHtmlReport(result: RankingResult): string {
 <body>
   <div class="container">
     <div class="header">
-      <h1>🏆 CODE996 卷王排行榜</h1>
+      <h1>🏆 代码工作强度排行榜</h1>
       <div class="meta">
         <span>📅 生成时间：${new Date().toLocaleString('zh-CN')}</span>
         <span>⏰ 分析时段：${result.metadata.timeRange.since} ~ ${result.metadata.timeRange.until}</span>
@@ -328,7 +391,7 @@ function buildHtmlReport(result: RankingResult): string {
     </div>
 
     <div class="ranking-table-container">
-      <h2>📊 排行榜</h2>
+      <h2 style="color: #10b981;">📊 代码量排行榜</h2>
       <table>
         <thead>
           <tr>
@@ -343,14 +406,56 @@ function buildHtmlReport(result: RankingResult): string {
           </tr>
         </thead>
         <tbody>
-          ${tableRows}
+          ${tableRowsByLines}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="ranking-table-container">
+      <h2 style="color: #3b82f6;">📈 提交数排行榜</h2>
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align: center;">排名</th>
+            <th>作者</th>
+            <th style="text-align: center;">提交数</th>
+            <th style="text-align: center;">996指数</th>
+            <th style="text-align: center;">加班率</th>
+            <th style="text-align: center;">周末提交</th>
+            <th style="text-align: right;">代码行数</th>
+            <th style="text-align: center;">工作强度</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${tableRowsByCommits}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="ranking-table-container">
+      <h2 style="color: #ef4444;">🔥 996指数排行榜</h2>
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align: center;">排名</th>
+            <th>作者</th>
+            <th style="text-align: center;">提交数</th>
+            <th style="text-align: center;">996指数</th>
+            <th style="text-align: center;">加班率</th>
+            <th style="text-align: center;">周末提交</th>
+            <th style="text-align: right;">代码行数</th>
+            <th style="text-align: center;">工作强度</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${tableRowsByIndex996}
         </tbody>
       </table>
     </div>
 
     <div class="footer">
       <p><strong>💡 提示：</strong> 996指数仅供参考，请结合团队实际情况综合判断。</p>
-      <p style="margin-top: 8px; color: #9ca3af;">由 <strong>CODE996</strong> 生成 · 关注团队健康 · 拒绝996</p>
+      <p style="margin-top: 8px; color: #9ca3af;">由 <strong>真诚热爱度分析报告</strong> 生成 · 关注团队健康 · 拒绝996</p>
     </div>
   </div>
 </body>

@@ -12,7 +12,30 @@ export class RankingPrinter {
    */
   print(result: RankingResult): void {
     this.printHeader()
-    this.printRankingTable(result.items)
+    
+    // 打印代码量排行榜（默认）
+    console.log(chalk.hex('#10b981').bold('📊 代码量排行榜'))
+    console.log()
+    this.printRankingTable(result.byLines)
+    
+    // 打印提交数排行榜
+    console.log()
+    console.log('─'.repeat(80))
+    console.log()
+    console.log(chalk.hex('#3b82f6').bold('📈 提交数排行榜'))
+    console.log()
+    this.printRankingTable(result.byCommits)
+    
+    // 打印996指数排行榜
+    console.log()
+    console.log('─'.repeat(80))
+    console.log()
+    console.log(chalk.hex('#ef4444').bold('🔥 996指数排行榜'))
+    console.log()
+    this.printRankingTable(result.byIndex996)
+    
+    console.log()
+    console.log('═'.repeat(80))
     this.printSummary(result)
     this.printMetadata(result.metadata)
   }
@@ -243,8 +266,6 @@ ${chalk.cyan('常用选项:')}
   --merge-authors             合并同名不同邮箱的作者
   --topN <number>             显示前N名 (默认10)
   --min-commits <number>      最少提交数阈值 (默认5)
-  --sort-by <type>            排序方式 (index996|commits|lines, 默认index996)
-  -f, --format <type>         输出格式 (txt|html, 默认txt)
 
 ${chalk.cyan('示例:')}
   codeviz ranking                          # 分析最近一年
@@ -254,9 +275,7 @@ ${chalk.cyan('示例:')}
   codeviz ranking --merge-authors          # 合并同名作者
   codeviz ranking --topN 5                 # 显示前5名
   codeviz ranking --author "张三"          # 分析特定作者
-  codeviz ranking --sort-by commits        # 按提交数排序
-  codeviz ranking --sort-by lines          # 按代码行数排序
-  codeviz ranking -f html                  # 生成HTML报告并在浏览器预览
+  codeviz -f html ranking                  # 生成HTML报告并在浏览器预览
     `)
   }
 }

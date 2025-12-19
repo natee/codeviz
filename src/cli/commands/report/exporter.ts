@@ -110,7 +110,7 @@ function buildTextReport(ctx: ReportContext): string {
   const blocks = [
     '',
     '╔═══════════════════════════════════════════════════════════╗',
-    '║                     CODE996 分析报告                      ║',
+    '║                     真诚热爱度分析报告                     ║',
     '╚═══════════════════════════════════════════════════════════╝',
     '',
     `📅 生成时间: ${ctx.generatedAt}`,
@@ -161,7 +161,7 @@ function buildMarkdownReport(ctx: ReportContext): string {
   }
 
   const lines = [
-    '# 📊 CODE996 分析报告',
+    '# 📊 真诚热爱度分析报告',
     '',
     `> 📅 生成时间：${ctx.generatedAt}  `,
     `> ⏰ 分析时段：${ctx.rangeText}`,
@@ -229,7 +229,7 @@ function buildHtmlReport(ctx: ReportContext): string {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CODE996 分析报告</title>
+  <title>真诚热爱度分析报告</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -390,7 +390,7 @@ function buildHtmlReport(ctx: ReportContext): string {
 <body>
   <div class="container">
     <div class="header">
-      <h1>📊 CODE996 分析报告</h1>
+      <h1>📊 真诚热爱度分析报告</h1>
       <div class="meta">
         <span>📅 ${ctx.generatedAt}</span>
         <span>⏰ ${ctx.rangeText}</span>
@@ -540,7 +540,7 @@ function buildSvgReport(ctx: ReportContext): string {
     <rect x="40" y="40" width="${width - 80}" height="220" rx="16" fill="#ffffff" opacity="0.98"/>
   </g>
   <!-- 标题文字 -->
-  <text x="60" y="100" font-size="48" font-weight="900" fill="#111827">📊 CODE996</text>
+  <text x="60" y="100" font-size="48" font-weight="900" fill="#111827">📊 真诚热爱度分析报告</text>
   <text x="60" y="140" font-size="20" fill="#6b7280" font-weight="500">工作强度分析报告</text>
   <text x="60" y="180" font-size="14" fill="#9ca3af">📅 ${escapeXml(ctx.generatedAt)}</text>
   <text x="60" y="205" font-size="14" fill="#9ca3af">⏰ ${escapeXml(truncate(ctx.rangeText, 60))}</text>
@@ -805,7 +805,7 @@ function buildMarkdownPreviewHtml(mdContent: string): string {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CODE996 分析报告</title>
+  <title>真诚热爱度分析报告</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {

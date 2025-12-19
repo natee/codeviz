@@ -46,18 +46,19 @@ export class RankingExecutor {
         const printer = new RankingPrinter()
         printer.print(result)
 
-        // 如果指定了特定作者，打印详细信息
-        if (options.author) {
-          const targetItem = result.items.find(item =>
-            item.author.includes(options.author!) || item.email.includes(options.author!)
-          )
+            // 如果指定了特定作者，打印详细信息
+            if (options.author) {
+              // 从代码量排行榜中查找（因为包含所有作者数据）
+              const targetItem = result.byLines.find(item =>
+                item.author.includes(options.author!) || item.email.includes(options.author!)
+              )
 
-          if (targetItem) {
-            printer.printAuthorDetail(targetItem)
-          } else {
-            console.log(chalk.yellow(`⚠️  未找到作者: ${options.author}`))
-          }
-        }
+              if (targetItem) {
+                printer.printAuthorDetail(targetItem)
+              } else {
+                console.log(chalk.yellow(`⚠️  未找到作者: ${options.author}`))
+              }
+            }
       }
 
       printGlobalNotices()

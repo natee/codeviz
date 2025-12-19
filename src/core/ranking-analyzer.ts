@@ -68,27 +68,37 @@ export class RankingAnalyzer {
       rankingItems.push(item)
     }
 
-    // 5. 排序（根据sortBy参数）
-    const sortBy = options.sortBy || 'index996'
-    this.sortRankingItems(rankingItems, sortBy)
-
-    // 6. 添加排名
-    rankingItems.forEach((item, index) => {
-      item.rank = index + 1
-    })
-
-    // 7. 限制显示数量
+    // 5. 生成三种排行榜
     const topN = options.topN || 10
-    const limitedItems = rankingItems.slice(0, topN)
 
-    // 8. 生成摘要
-    const summary = this.generateSummary(rankingItems)
+    // 按代码量排序
+    const byLines = [...rankingItems]
+    this.sortRankingItems(byLines, 'lines')
+    this.assignRanks(byLines)
+    const topByLines = byLines.slice(0, topN)
 
-    // 9. 获取时间范围
+    // 按提交数排序
+    const byCommits = [...rankingItems]
+    this.sortRankingItems(byCommits, 'commits')
+    this.assignRanks(byCommits)
+    const topByCommits = byCommits.slice(0, topN)
+
+    // 按996指数排序
+    const byIndex996 = [...rankingItems]
+    this.sortRankingItems(byIndex996, 'index996')
+    this.assignRanks(byIndex996)
+    const topByIndex996 = byIndex996.slice(0, topN)
+
+    // 6. 生成摘要（基于996指数排行）
+    const summary = this.generateSummary(byIndex996)
+
+    // 7. 获取时间范围
     const timeRange = await this.getTimeRange(options)
 
     return {
-      items: limitedItems,
+      byLines: topByLines,
+      byCommits: topByCommits,
+      byIndex996: topByIndex996,
       summary,
       metadata: {
         timeRange,
@@ -164,6 +174,16 @@ export class RankingAnalyzer {
         items.sort((a, b) => b.index996 - a.index996)
         break
     }
+  }
+
+  /**
+   * 为排行榜项目分配排名
+   * @param items 排行榜项目列表
+   */
+  private assignRanks(items: RankingItem[]): void {
+    items.forEach((item, index) => {
+      item.rank = index + 1
+    })
   }
 
   /**
